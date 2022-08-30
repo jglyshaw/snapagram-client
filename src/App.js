@@ -1,17 +1,19 @@
 import Navbar from "./components/Navbar";
 import MyCard from "./components/MyCard";
-import Text from "./components/Text";
+import CounterPage from "./pages/CounterPage";
+import ShoppingPage from "./pages/ShoppingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
+    <div style = {{padding: "5px"}}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navbar />}>
-            <Route index element={<Text />} />
+            <Route index element={<MyCard text="Home Page" />} />
             <Route path="user" element={<MyCard text="User Page" />} />
-            <Route path="contact" element={<MyCard text="stupid" />} />
+            <Route path="counter" element={<CounterPage />} />
+            <Route path="shopping" element={<ShoppingPage />} />
             <Route path="*" element={<p>Invalid Page</p>} />
           </Route>
         </Routes>

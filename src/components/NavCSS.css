@@ -12,6 +12,7 @@ ul {
   }
   
   li a {
+    vertical-align: center;
     display: block;
     color: white;
     text-align: center;

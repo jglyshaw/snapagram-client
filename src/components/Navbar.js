@@ -1,25 +1,19 @@
 import { Outlet, Link } from "react-router-dom";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import NavCSS from './NavCSS.css'
+import blog from '../blog.png'
 function Navbar() {
     return (
         <>
-            <ul>
+            <ul >
+            <div style = {{padding: "30px"}}>
+                <li><img src={blog} alt="Girl in a jacket" width="40"/></li>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/user">User</Link></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#about">About</a></li>
+                <li><Link to="/counter">Counter</Link></li>
+                <li><Link to="/shopping">Shopping</Link></li>
+            </div>
             </ul>
-
-        
             <Outlet />
-
         </>
     );
 }
