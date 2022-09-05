@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import { fetchPosts } from "../API/api";
+import { getCarts, createCart, deleteCart } from "../API/api";
 
 function ShoppingPage() {
 
@@ -17,7 +17,7 @@ function ShoppingPage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await fetchPosts()
+            const result = await getCarts()
             setItems(result.data);
         };
         fetchData();
@@ -27,12 +27,23 @@ function ShoppingPage() {
 
     const [itemField, setItemField] = useState('')
     const [priceField, setPriceField] = useState('')
-
     const [items, setItems] = useState([]);
 
-    const addItem = (e, name, value) => {
+    const addItem = async (e) => {
         e.preventDefault()
-        setItems([...items, { item: name, price: value }])
+        const cart = await createCart({
+            totalPrice: priceField,
+            items: itemField.split(',')
+        })
+
+        setItems([...items, cart.data])
+    }
+
+    const deleteCartFunc = async (id) => {
+        const cart = await deleteCart(id)
+        const result = await getCarts()
+        setItems(result.data);
+        
     }
 
 
@@ -40,8 +51,7 @@ function ShoppingPage() {
     return (
         <div style={myStyledComponentStyles}>
 
-
-            <form onSubmit={(e) => addItem(e, itemField, priceField)}>
+            <form onSubmit={(e) => addItem(e)}>
                 <label>Price </label>
                 <input
                     type='text'
@@ -64,12 +74,13 @@ function ShoppingPage() {
 
             <Grid container>
             {items.map((item) => (
-                <Grid item xs={6} md={6} style = {{padding: "5px"}}>
+                <Grid item xs={12} md={6} style = {{padding: "5px"}}>
                 <Card sx={{ minWidth: 275 }}>
+                    <Button onClick = {() => deleteCartFunc(item._id)}>X</Button>
                     <h1>Total Price: ${item.totalPrice}</h1>
-                    {item.items.map((x) => (
+                    {item.items.map((x, index) => (
                         <>
-                            <p>{x}</p>
+                            <p>{index+1}: {x}</p>
                         </>
                     ))}
                 </Card>
