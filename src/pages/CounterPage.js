@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from '../redux/counter'
 
 function CounterPage() {
 
@@ -12,22 +13,23 @@ function CounterPage() {
         minHeight: '200px'
     }
 
-    const [count, setCount] = useState({
-        value: 0
-    });
+    const [name, setName] = useState(0);
+    const count = useSelector((state) => state.counter.value)
+    const dispatch = useDispatch()
 
-    
+ 
 
-    const changeCounter = (amount) => {
-        setCount({...count, value: count.value+amount})
-    }
+  
 
     return (
         <div style={myStyledComponentStyles}>
-            <Button variant="contained" onClick={() => changeCounter(-1)}>-</Button>
-            <p style={{ display: 'inline', marginLeft: 10, marginRight: 10}}>{count.value}</p>
-            <Button variant="contained" onClick={() => changeCounter(1)}>+</Button>
+            <h1>Counter!</h1>
+            <Button variant="contained" onClick={() => dispatch(decrement())}>-</Button>
+            <p style={{ display: 'inline', marginLeft: 10, marginRight: 10 }}>{count}</p>
+            <Button variant="contained" onClick={() => dispatch(increment())}>+</Button>
         </div>
+
+
     );
 }
 
