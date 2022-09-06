@@ -5,12 +5,11 @@ function Navbar() {
     return (
         <>
             <ul >
-            <div style = {{padding: "30px"}}>
-                <li><img src={blog} alt="Girl in a jacket" width="40"/></li>
+            <div style = {{padding: "20px"}}>
+                <li><img src={blog} width="40" style = {{marginRight: "10px"}}/></li>
                 <li><Link to="/">Home</Link></li>
-                <li><Link to="/user">User</Link></li>
                 <li><Link to="/counter">Counter</Link></li>
-                <li><Link to="/shopping">Shopping</Link></li>
+                <li><Link to="/posts">Posts</Link></li>
             </div>
             </ul>
             <Outlet />
