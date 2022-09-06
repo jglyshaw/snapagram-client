@@ -24,8 +24,14 @@ function PostPage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getPosts()
-            setItems(result.data);
+
+            try {
+                const result = await getPosts()
+                setItems(result.data);
+            } catch (error) {
+                console.log(error)
+                alert("could not load data")
+            }
         };
         fetchData();
     }, []);
@@ -35,12 +41,14 @@ function PostPage() {
     const [titleField, setTitleField] = useState('')
     const [descriptionField, setDescriptionField] = useState('')
     const [items, setItems] = useState([]);
-    const [alert, setAlert] = useState(false);
+    const [showAlert, setAlert] = useState(false);
     const [open, setOpen] = useState(false);
 
     const addItem = async (e) => {
+        
         e.preventDefault()
-        console.log(alert)
+
+        console.log(showAlert)
 
         if (descriptionField === "" || titleField === "") {
             setAlert(true)
@@ -74,7 +82,7 @@ function PostPage() {
         <div style={backdrop}>
 
             <form onSubmit={(e) => addItem(e)} style={{ backgroundColor: "white", padding: "15px" }}>
-                {alert && <Alert severity="error">Invalid Form Data</Alert>}
+                {showAlert && <Alert severity="error">Invalid Form Data</Alert>}
                 <br />
                 <Grid container>
                     <label>Title</label>

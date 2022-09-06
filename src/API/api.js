@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3300/posts';
+const url = 'https://snapagram-server.herokuapp.com/posts';
 
 export const getPosts = () => axios.get(url);
 export const createPost = (newPost) => axios.post(url, newPost);
