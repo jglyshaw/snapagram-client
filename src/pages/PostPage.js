@@ -1,21 +1,14 @@
 import { useState, useEffect } from "react";
 import Grid from '@mui/material/Grid';
 import Post from "../components/Post";
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import PostForm from "../components/PostForm";
-import EditPost from "../components/EditPost";
+import EditForm from "../components/EditForm";
 import { createPost, editPost } from "../API/api";
 import { getPosts, deletePost, likePost } from "../API/api";
 import { useDispatch } from 'react-redux'
-import { setID } from '../redux/posts'
+import { setCurrentPost } from '../redux/posts'
 
 function PostPage() {
-
 
     const backdrop = {
         backgroundColor: '#ecf0f1',
@@ -26,14 +19,12 @@ function PostPage() {
     }
 
     const [items, setItems] = useState([]);
-    const [open, setOpen] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const dispatch = useDispatch()
 
 
     useEffect(() => {
         const fetchData = async () => {
-
             try {
                 const result = await getPosts()
                 setItems(result.data);
@@ -45,7 +36,7 @@ function PostPage() {
         fetchData();
     }, []);
 
-    const reload = async (id) => {
+    const reload = async () => {
         const result = await getPosts()
         setItems(result.data);
     }
@@ -62,21 +53,13 @@ function PostPage() {
         setItems(result.data);
     }
 
-    const handleClose = async (id) => {
-        setOpen(false)
-    }
-
-    const handleOpenEdit = (id) => {
-        dispatch(setID(id))
-        setShowEdit(true);
-    }
-
     const onAddPost = async (title, description, image) => {
         await createPost({
             title: title,
             description: description,
             image: image
         })
+        reload()
     }
 
     const onEditPost = async (id, title, description, image) => {
@@ -89,44 +72,31 @@ function PostPage() {
         reload()
     }
 
+    const showEditScreen = (id, title, description, image) => {
+        dispatch(setCurrentPost({id: id, title: title, description: description, image: image}))
+        setShowEdit(true);
+    }
+
     return (
         <div style={backdrop}>
-            <EditPost show={showEdit} setShow={setShowEdit} onSubmitCall={onEditPost} />
-            <PostForm onSubmitCall={onAddPost} newPost={true}/>
+            {showEdit && <EditForm show={showEdit} setShow={setShowEdit} onSubmitCall={onEditPost} title = "hi"/>}
+            <PostForm onSubmitCall={onAddPost}/>
             <br />
 
             <Grid container>
                 {items.map((item) => (
                     <Grid item xs={12} md={4} style={{ padding: "10px" }}>
                         <Post title={item.title} description={item.description} id={item._id} date={item.date}
-                            onDelete={deletePostById} onLike={likePostById} onEdit={() => handleOpenEdit(item._id)}
+                            onDelete={deletePostById} onLike={likePostById} 
+                            onEdit={() => showEditScreen(item._id, item.title, item.description, item.image)}
                             likes={item.likes} image={item.image} />
                     </Grid>
                 ))}
             </Grid>
 
-            <Dialog
-                open={open}
-                onClose={deletePostById}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
+      
 
-                <DialogTitle id="alert-dialog-title">
-                    Delete Post?
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        This cannot be undone
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+          
 
         </div>
     );

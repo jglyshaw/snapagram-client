@@ -1,5 +1,4 @@
 import Navbar from "./components/Navbar";
-import MyCard from "./components/MyCard";
 import CounterPage from "./pages/CounterPage";
 import PostPage from "./pages/PostPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -10,7 +9,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navbar />}>
-            <Route index element={<MyCard text="Home Page" />} />
+            <Route index element={<p>Too lazy to make home page</p>} />
             <Route path="counter" element={<CounterPage />} />
             <Route path="posts" element={<PostPage />} />
             <Route path="*" element={<p>Invalid Page</p>} />

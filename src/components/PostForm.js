@@ -2,12 +2,8 @@ import { useState } from "react";
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import css from './form.css'
-import { useSelector } from 'react-redux'
 
-
-function PostForm({ onSubmitCall, newPost }) {
-    const id = useSelector((state) => state.posts.value)
-    console.log("this is the id from postform", id)
+function PostForm({ onSubmitCall }) {
     const onSubmit = async (e) => {
         e.preventDefault()
 
@@ -16,26 +12,18 @@ function PostForm({ onSubmitCall, newPost }) {
             return;
         }
 
-        if (newPost) {
-            onSubmitCall(titleField, descriptionField, imageField)
-        }
-        else {
-            onSubmitCall(id, titleField, descriptionField, imageField)
-        }
-
+        onSubmitCall(titleField, descriptionField, imageField)
+        
         setDescriptionField("")
         setTitleField("")
         setImageField("")
         setAlert(false)
     }
 
-
     const [titleField, setTitleField] = useState('')
     const [imageField, setImageField] = useState('')
     const [descriptionField, setDescriptionField] = useState('')
     const [showAlert, setAlert] = useState(false);
-
-
 
     return (<>
         <form onSubmit={(e) => onSubmit(e)} style={{ backgroundColor: "white", padding: "15px" }}>
