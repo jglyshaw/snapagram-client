@@ -7,19 +7,24 @@ function Post({ title, description, onDelete, onLike, onEdit, image, tags, id, l
 
     const desc = {
         textAlign: 'left',
-        padding: '20px'
+        paddingLeft: '20px',
+        paddingRight: '20px'
     }
     const imgToUse = image ? image : frame;
-
-
     return (
         <>
             <Card sx={{ minWidth: 275 }}>
                 <h1>{title}</h1>
                 <p>{date.toString()}</p >
-                <img src = {imgToUse} alt = "could not load" width = "300px"/>
+                <img src = {imgToUse} alt = "could not load image" width = "300px"/>
                 <p style = {desc}><b>Description</b>: {description}</p>
                 <p style = {desc}><b>Likes</b>: {likes}</p>
+                {tags.length > 0 && tags[0] !== '' &&  <p style = {desc}><b>Tags</b>:</p>}
+                <p style={{color: "blue"}}>
+                {tags[0] !== '' && tags.map((tag, id) => (
+                    <span key={id}>#{tag} </span> ))
+                }
+                </p>
                 <Button onClick={() => onLike(id)}>Like</Button>
                 <Button onClick= {() => onEdit(true)}>Edit</Button>
                 <Button onClick={() => onDelete(id)}>Delete</Button>

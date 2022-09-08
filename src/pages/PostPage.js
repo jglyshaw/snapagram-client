@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Post from "../components/Post";
 import PostForm from "../components/PostForm";
 import EditForm from "../components/EditForm";
+import Confirmation from "../components/Confirmation";
 import { createPost, editPost } from "../API/api";
 import { getPosts, deletePost, likePost } from "../API/api";
 import { useDispatch } from 'react-redux'
@@ -20,6 +21,7 @@ function PostPage() {
 
     const [items, setItems] = useState([]);
     const [showEdit, setShowEdit] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
     const dispatch = useDispatch()
 
 
@@ -45,6 +47,7 @@ function PostPage() {
         await deletePost(id)
         const result = await getPosts()
         setItems(result.data);
+        setShowDelete(false);
     }
 
     const likePostById = async (id) => {
@@ -53,43 +56,52 @@ function PostPage() {
         setItems(result.data);
     }
 
-    const onAddPost = async (title, description, image) => {
+    const onAddPost = async (title, description, image, tags) => {
         await createPost({
             title: title,
             description: description,
-            image: image
+            image: image,
+            tags: tags
         })
         reload()
     }
 
-    const onEditPost = async (id, title, description, image) => {
+    const onEditPost = async (id, title, description, image, tags) => {
         await editPost(id, {
             title: title,
             description: description,
-            image: image
+            image: image,
+            tags: tags
         })
         setShowEdit(false)
         reload()
     }
 
-    const showEditScreen = (id, title, description, image) => {
-        dispatch(setCurrentPost({id: id, title: title, description: description, image: image}))
+    const showEditScreen = (id, title, description, image, tags) => {
+        dispatch(setCurrentPost({id: id, title: title, description: description, image: image, tags: tags}))
         setShowEdit(true);
+    }
+
+    const showDeleteScreen = (id) => {
+        dispatch(setCurrentPost({id: id}));
+        setShowDelete(true);
     }
 
     return (
         <div style={backdrop}>
-            {showEdit && <EditForm show={showEdit} setShow={setShowEdit} onSubmitCall={onEditPost} title = "hi"/>}
+            {showEdit && <EditForm show={showEdit} setShow={setShowEdit} onSubmitCall={onEditPost}/>}
+            {showDelete && <Confirmation onClose = {() => setShowDelete(false)} onDelete= {deletePostById} />}
+
             <PostForm onSubmitCall={onAddPost}/>
             <br />
 
-            <Grid container>
-                {items.map((item) => (
-                    <Grid item xs={12} md={4} style={{ padding: "10px" }}>
+            <Grid container alignItems="center">
+                {items.map((item, id) => (
+                    <Grid key = {id} sm={12} md={4} style={{ padding: "10px" }}>
                         <Post title={item.title} description={item.description} id={item._id} date={item.date}
-                            onDelete={deletePostById} onLike={likePostById} 
-                            onEdit={() => showEditScreen(item._id, item.title, item.description, item.image)}
-                            likes={item.likes} image={item.image} />
+                            onDelete={() => showDeleteScreen(item._id)} onLike={likePostById} 
+                            onEdit={() => showEditScreen(item._id, item.title, item.description, item.image, item.tags.toString())}
+                            likes={item.likes} image={item.image} tags={item.tags} />
                     </Grid>
                 ))}
             </Grid>
