@@ -12,6 +12,7 @@ function App() {
             <Route index element={<p>Too lazy to make home page</p>} />
             <Route path="counter" element={<CounterPage />} />
             <Route path="posts" element={<PostPage />} />
+            <Route path="account" element={<p>Account page</p>} />
             <Route path="*" element={<p>Invalid Page</p>} />
           </Route>
         </Routes>

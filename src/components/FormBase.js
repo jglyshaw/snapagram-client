@@ -1,51 +1,44 @@
 import { useState } from "react";
+import { useSelector } from 'react-redux'
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import css from './form.css'
+import formStyle from './form.css'
 
-function PostForm({ onSubmitCall }) {
-    const onSubmit = async (e) => {
-        e.preventDefault()
+function FormBase({onSubmitCall}) {
+    const currentPost = useSelector((state) => state.posts.value)
 
-        if (descriptionField === "" || titleField === "") {
-            setAlert(true)
-            return;
-        }
-
-        console.log(tagField)
-        onSubmitCall(titleField, descriptionField, imageField, tagField.split(','))
-        
-        setDescriptionField("")
-        setTitleField("")
-        setImageField("")
-        setTagField("")
-        setAlert(false)
-    }
-
-    const [titleField, setTitleField] = useState('')
-    const [imageField, setImageField] = useState('')
-    const [descriptionField, setDescriptionField] = useState('')
-    const [tagField, setTagField] = useState('')
+    const [titleField, setTitleField] = useState(currentPost && currentPost.title ? currentPost.title : "")
+    const [imageField, setImageField] = useState(currentPost && currentPost.image ? currentPost.image : "")
+    const [descriptionField, setDescriptionField] = useState(currentPost ? currentPost.description : "")
+    const [tagField, setTagField] = useState(currentPost ? currentPost.tags : "")
     const [showAlert, setAlert] = useState(false);
 
     const inputStle = {
         marginBottom: "25px"
     }
 
-    return (
-    <Accordion  >
-    <AccordionSummary style = {{justifyContent: 'center'}}
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-            <h1>Create New Post</h1>
-        </AccordionSummary>
+    const onSubmit = async (e) => {
+        e.preventDefault()
 
-        <form onSubmit={(e) => onSubmit(e)} style={{ backgroundColor: "white", padding: "15px" }}>
+
+        if (descriptionField === undefined || titleField === undefined) {
+            setAlert(true)
+            return;
+        }
+        
+        setDescriptionField("")
+        setTitleField("")
+        setImageField("")
+        setTagField("")
+        setAlert(false)
+
+        onSubmitCall(currentPost ? currentPost.id : null, titleField, descriptionField, imageField, tagField ? tagField.split(',') : [])
+
+    }
+console.log(titleField)
+    return ( <>
+    
+    <form onSubmit={(e) => onSubmit(e)} style={{ backgroundColor: "white", padding: "15px" }}>
             {showAlert && <Alert severity="error">Invalid Form Data</Alert>}
             <br />
             <Grid container>
@@ -60,8 +53,7 @@ function PostForm({ onSubmitCall }) {
                 <input type='submit' value='Save Post' className='btn btn-block' />
             </Grid>
         </form>
-        </Accordion>
-        );
+    </> );
 }
 
-export default PostForm;
+export default FormBase;
