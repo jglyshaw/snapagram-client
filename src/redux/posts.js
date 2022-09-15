@@ -5,7 +5,7 @@ const initialState = {
 }
 
 export const postSlice = createSlice({
-  name: 'posts',
+  name: 'currentPost',
   initialState,
   reducers: {
     setCurrentPost: (state, action) => {

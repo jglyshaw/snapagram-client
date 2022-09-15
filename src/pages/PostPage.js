@@ -1,5 +1,5 @@
 import Post from "../components/Post";
-import FormBase from '../components/FormBase';
+import PostForm from '../components/PostForm';
 import Confirmation from "../components/Confirmation";
 import { Card, Snackbar, Grid, CircularProgress, Dialog, Button } from '@mui/material/';
 import { createPost, editPost, getPosts, deletePost, likePost } from "../API/api";
@@ -104,9 +104,9 @@ function PostPage() {
                     justifyContent="center"
                     alignItems="center" 
                 >
-                    <Grid item sm={4}> <h1>Your Posts</h1> </Grid>
-                    <Grid item sm={4}><Button variant="contained" onClick={() => showAddScreen()}>Create new Post</Button></Grid>
-                    <Grid item sm={4}> {items !== null && <h2>Posts: {items.length} </h2>} </Grid>
+                    <Grid item sm={6} md = {4}> <h3>Your Posts</h3> </Grid>
+                    <Grid item sm={6}  md = {4}><Button variant="contained" onClick={() => showAddScreen()}>Create new Post</Button></Grid>
+                    <Grid item sm={12} md = {4}> {items !== null && <h3>Posts: {items.length} </h3>} </Grid>
                 </Grid>
             </Card>
 
@@ -121,12 +121,12 @@ function PostPage() {
 
             <Dialog open={showCreate} onClose={() => setShowCreate(false)}>
                 <h1 style={{ textAlign: "center" }}>Create Post</h1>
-                <FormBase onSubmitCall={onAddPost} />
+                <PostForm onSubmitCall={onAddPost} />
             </Dialog>
 
             <Dialog open={showEdit} onClose={() => setShowEdit(false)}>
                 <h1 style={{ textAlign: "center" }}>Edit Post</h1>
-                <FormBase onSubmitCall={onEditPost} />
+                <PostForm onSubmitCall={onEditPost} />
             </Dialog>
 
             {items === null && <CircularProgress />}
@@ -134,7 +134,7 @@ function PostPage() {
 
             <Grid container alignItems="center">
                 {items !== null && items.map((item, id) => (
-                    <Grid item key={id} sm={12} md={4} style={{ padding: "10px" }}>
+                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px" }}>
                         <Post
                             onDelete={() => showDeleteScreen(item._id)}
                             onLike={likePostById}

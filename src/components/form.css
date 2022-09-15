@@ -1,4 +1,4 @@
-input[type=text], select {
+input[type=text], input[type=password], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -8,6 +8,13 @@ input[type=text], select {
     box-sizing: border-box;
   }
   
+form {
+  text-align: center;
+  width: 500px;
+  display: inline-block;
+  padding: 10px
+}
+
   input[type=submit] {
     width: 100%;
     background-color: #4CAF50;
