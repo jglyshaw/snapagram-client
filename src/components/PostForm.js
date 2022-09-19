@@ -2,14 +2,17 @@ import { useState } from "react";
 import { useSelector } from 'react-redux'
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
-import formStyle from './form.css'
+import formStyle from '../style/form.css'
 
 function PostForm({onSubmitCall}) {
-    const currentPost = useSelector((state) => state.posts.value)
-    const [titleField, setTitleField] = useState((currentPost && currentPost.title) ? currentPost.title : "")
-    const [imageField, setImageField] = useState((currentPost && currentPost.image) ? currentPost.image : "")
-    const [descriptionField, setDescriptionField] = useState(currentPost && currentPost.description? currentPost.description : "")
-    const [tagField, setTagField] = useState(currentPost && currentPost.description ? currentPost.tags : "")
+    
+    const currentID = useSelector((state) => state.postReducer.currentID)
+    const currentPost = useSelector((state) => state.postReducer.value).filter(post => post._id === currentID)[0]
+
+    const [titleField, setTitleField] = useState(currentPost ? currentPost.title : "")
+    const [imageField, setImageField] = useState(currentPost ? currentPost.image : "")
+    const [descriptionField, setDescriptionField] = useState(currentPost ? currentPost.description : "")
+    const [tagField, setTagField] = useState(currentPost ? currentPost.tags.toString() : "")
     const [showAlert, setAlert] = useState(false);
 
     const inputStyle = {
@@ -24,13 +27,12 @@ function PostForm({onSubmitCall}) {
             return;
         }
         
+        onSubmitCall(titleField, descriptionField, imageField, tagField ? tagField.split(',') : [])
         setDescriptionField("")
         setTitleField("")
         setImageField("")
         setTagField("")
         setAlert(false)
-
-        onSubmitCall(currentPost ? currentPost.id : null, titleField, descriptionField, imageField, tagField ? tagField.split(',') : [])
 
     }
     return ( <>

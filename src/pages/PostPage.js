@@ -2,10 +2,10 @@ import Post from "../components/Post";
 import PostForm from '../components/PostForm';
 import Confirmation from "../components/Confirmation";
 import { Card, Snackbar, Grid, CircularProgress, Dialog, Button } from '@mui/material/';
-import { createPost, editPost, getPosts, deletePost, likePost } from "../API/api";
-import { useDispatch } from 'react-redux'
-import { useState, useEffect } from "react";
-import { setCurrentPost } from '../redux/posts'
+import { createPost, editPost, getPosts, deletePost, likePost } from "../api/api";
+import { useDispatch, useSelector } from 'react-redux'
+import { useState } from "react";
+import { setPosts, setCurrentID } from '../redux/posts'
 
 function PostPage() {
     const backdrop = {
@@ -16,7 +16,8 @@ function PostPage() {
         minHeight: '200px'
     }
 
-    const [items, setItems] = useState(null);
+    const posts = useSelector((state) => state.postReducer.value)
+    const currentID = useSelector((state) => state.postReducer.currentID)
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [showCreate, setShowCreate] = useState(false);
@@ -24,33 +25,22 @@ function PostPage() {
     const [snackText, setSnackText] = useState("");
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await getPosts()
-                setItems(result.data);
-            } catch (error) {
-                console.log(error)
-                alert("could not load data")
-            }
-        };
-        fetchData();
-    }, []);
-
-    const deletePostById = async (id) => {
+    const deletePostById = async () => {
         setSnackText("Post deleted")
         setShowSnack(true)
-        await deletePost(id)
+        await deletePost(currentID)
         setShowDelete(false);
         reload()
     }
 
     const likePostById = async (id) => {
+        setSnackText("Liked Post")
+        setShowSnack(true)
         await likePost(id)
         reload()
     }
 
-    const onAddPost = async (id, title, description, image, tags) => {
+    const onAddPost = async (title, description, image, tags) => {
         setShowCreate(false)
         setSnackText("Post created")
         setShowSnack(true)
@@ -65,13 +55,13 @@ function PostPage() {
 
     const reload = async () => {
         const result = await getPosts()
-        setItems(result.data);
+        dispatch(setPosts(result.data))
     }
 
-    const onEditPost = async (id, title, description, image, tags) => {
+    const onEditPost = async (title, description, image, tags) => {
         setSnackText("Updated post")
         setShowSnack(true)
-        await editPost(id, {
+        await editPost(currentID, {
             title: title,
             description: description,
             image: image,
@@ -79,21 +69,6 @@ function PostPage() {
         })
         setShowEdit(false)
         reload()
-    }
-
-    const showEditScreen = (id, title, description, image, tags) => {
-        dispatch(setCurrentPost({ id: id, title: title, description: description, image: image, tags: tags }))
-        setShowEdit(true);
-    }
-
-    const showDeleteScreen = (id) => {
-        dispatch(setCurrentPost({ id: id }));
-        setShowDelete(true);
-    }
-
-    const showAddScreen = () => {
-        dispatch(setCurrentPost({}));
-        setShowCreate(true)
     }
 
     return (
@@ -104,9 +79,10 @@ function PostPage() {
                     justifyContent="center"
                     alignItems="center" 
                 >
-                    <Grid item sm={6} md = {4}> <h3>Your Posts</h3> </Grid>
-                    <Grid item sm={6}  md = {4}><Button variant="contained" onClick={() => showAddScreen()}>Create new Post</Button></Grid>
-                    <Grid item sm={12} md = {4}> {items !== null && <h3>Posts: {items.length} </h3>} </Grid>
+                    <Grid item sm={12} md = {4}> <h3>Your Posts</h3> </Grid>
+                    <Grid item sm={12} md = {4}><Button variant="contained" onClick={() => {dispatch(setCurrentID(0)); setShowCreate(true)}}>
+                        Create new Post</Button></Grid>
+                    <Grid item sm={12} md = {4}> {posts !== null && <h3>Posts: {posts.length} </h3>} </Grid>
                 </Grid>
             </Card>
 
@@ -129,18 +105,17 @@ function PostPage() {
                 <PostForm onSubmitCall={onEditPost} />
             </Dialog>
 
-            {items === null && <CircularProgress />}
-            {items !== null && items.length === 0 && <h3>You haven't created any posts</h3>}
+            {posts === null && <CircularProgress />}
+            {posts !== null && posts.length === 0 && <h3>You haven't created any posts</h3>}
 
             <Grid container alignItems="center">
-                {items !== null && items.map((item, id) => (
+                {posts !== null && posts.map((post, id) => (
                     <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px" }}>
                         <Post
-                            onDelete={() => showDeleteScreen(item._id)}
+                            onDelete={() => {setShowDelete(true); dispatch(setCurrentID(post._id))}}
                             onLike={likePostById}
-                            onEdit={() => showEditScreen(item._id, item.title, item.description, item.image, item.tags.toString())}
-                            title={item.title} description={item.description} id={item._id} date={item.date}
-                            likes={item.likes} image={item.image} tags={item.tags} />
+                            onEdit={() => {setShowEdit(true); dispatch(setCurrentID(post._id))}}
+                            id={post._id}  />
                     </Grid>
                 ))}
             </Grid>

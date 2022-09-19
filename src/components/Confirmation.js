@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 
 function Confirmation({onDelete, onClose, open}) {
     
-    const currentPost = useSelector((state) => state.posts.value)
+    const currentPost = useSelector((state) => state.postReducer.currentID)
     
     return ( <>
              <Dialog

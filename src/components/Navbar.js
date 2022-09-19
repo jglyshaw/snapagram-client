@@ -1,6 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
-import blog from '../blog.png'
-import NavCSS from './nav.css'
+import blog from '../images/blog.png'
+import NavCSS from '../style/nav.css'
 
 function Navbar() {
     return (

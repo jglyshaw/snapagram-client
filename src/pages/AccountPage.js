@@ -1,7 +1,7 @@
 
 
 import AccountForm from '../components/AccountForm';
-import banner from '../banner.png'
+import banner from '../images/banner.png'
 
 
 function AccountPage() {

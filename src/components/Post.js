@@ -1,11 +1,12 @@
-import { Card, IconButton, CardActions } from '@mui/material';
+import { Card, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import frame from '../profile.png'
+import frame from '../images/profile.png'
+import moment from 'moment'
+import { useSelector } from 'react-redux'
 
-
-function Post({ title, description, onDelete, onLike, onEdit, image, tags, id, likes, date }) {
+function Post({onDelete, onLike, onEdit, id}) {
 
     const desc = {
         textAlign: 'left',
@@ -17,13 +18,15 @@ function Post({ title, description, onDelete, onLike, onEdit, image, tags, id, l
     const icon = {
         fontSize: "25px",
     }
-
+    
+    const post = useSelector((state) => state.postReducer.value).filter(post => post._id === id)[0]
+    let {title, description, date, likes, tags, image} = post;
     const imgToUse = image ? image : frame;
     return (
         <>
             <Card sx={{ minWidth: 200 }}  >
                 <h2>{title}</h2>
-                <p>{date.toString()}</p >
+                <p>{moment(date).format("MMMM Do YYYY, h:mm a")}</p >
                 <img src={imgToUse} alt="" width="200px" />
                 <p style={desc}><b>Description</b>: {description}</p>
                 <p style={desc}><b>Likes</b>: {likes}</p>
@@ -33,7 +36,6 @@ function Post({ title, description, onDelete, onLike, onEdit, image, tags, id, l
                         <span key={id}>#{tag} </span>))
                     }
                 </p>
-
 
                 <IconButton aria-label="add to favorites" onClick={() => onLike(id)}>
                     <FavoriteIcon style={icon}/>

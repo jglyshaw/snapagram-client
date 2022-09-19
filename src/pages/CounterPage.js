@@ -12,7 +12,7 @@ function CounterPage() {
         minHeight: '200px'
     }
 
-    const count = useSelector((state) => state.counter.value)
+    const count = useSelector((state) => state.counterReducer.value)
     const dispatch = useDispatch()
 
     return (
