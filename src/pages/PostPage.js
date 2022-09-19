@@ -9,7 +9,6 @@ import { setPosts, setCurrentID } from '../redux/posts'
 
 function PostPage() {
     const backdrop = {
-        backgroundColor: '#ecf0f1',
         fontFamily: 'sans-serif',
         padding: '50px',
         textAlign: 'center',
@@ -108,10 +107,10 @@ function PostPage() {
             {posts === null && <CircularProgress />}
             {posts !== null && posts.length === 0 && <h3>You haven't created any posts</h3>}
 
-            <Grid container alignItems="center">
+            <Grid container alignItems="stretch" >
                 {posts !== null && posts.map((post, id) => (
-                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px" }}>
-                        <Post
+                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100%"}}>
+                        <Post 
                             onDelete={() => {setShowDelete(true); dispatch(setCurrentID(post._id))}}
                             onLike={likePostById}
                             onEdit={() => {setShowEdit(true); dispatch(setCurrentID(post._id))}}

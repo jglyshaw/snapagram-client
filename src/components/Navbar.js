@@ -11,7 +11,6 @@ function Navbar() {
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/counter">Counter</Link></li>
                 <li><Link to="/posts">Posts</Link></li>
-                <li><Link to="/account">Account</Link></li>
             </div>
             </ul>
             <Outlet />

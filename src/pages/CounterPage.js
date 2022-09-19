@@ -5,7 +5,6 @@ import { decrement, increment } from '../redux/counter'
 function CounterPage() {
 
     const myStyledComponentStyles = {
-        backgroundColor: '#ecf0f1',
         fontFamily: 'sans-serif',
         padding: '50px',
         textAlign: 'center',

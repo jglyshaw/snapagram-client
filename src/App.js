@@ -1,18 +1,22 @@
 import Navbar from "./components/Navbar";
 import CounterPage from "./pages/CounterPage";
+import AccountPage from "./pages/AccountPage";
 import PostPage from "./pages/PostPage";
 import { Outlet, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navigate } from "react-router";
 import { getPosts } from "./api/routes";
 import { useEffect } from "react";
-import { useDispatch  } from 'react-redux'
+import { useDispatch, useSelector  } from 'react-redux'
 import { setPosts } from './redux/posts'
 
-import AccountPage from "./pages/AccountPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
 
   const dispatch = useDispatch()
+  const loggedIn = useSelector((state) => state.accountReducer.loggedIn);
+  let nav = loggedIn ? <Navbar /> : <Outlet />
+  let redirectUser = <Navigate to="/account" />
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,17 +31,15 @@ function App() {
     fetchData();
   }, [dispatch]);
 
-  // let element = account ? <Navbar /> : <Outlet />
-  let element = <Navbar />
 
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={element}>
-            <Route index element={<p>Too lazy to make home page</p>} />
-            <Route path="counter" element={<CounterPage />} />
-            <Route path="posts" element={<PostPage />} />
+          <Route path="/" element={nav}>
+            <Route index element={!loggedIn ?  redirectUser :  <p>Too lazy to make home page</p>} />
+            <Route path="counter" element={!loggedIn ?  redirectUser :  <CounterPage />} />
+            <Route path="posts" element={!loggedIn ?  redirectUser :  <PostPage />} />
             <Route path="account" element={<AccountPage />} />
             <Route path="*" element={<p>Invalid Page</p>} />
           </Route>

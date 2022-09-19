@@ -1,6 +1,6 @@
 import { Card, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import frame from '../images/profile.png'
 import moment from 'moment'
@@ -12,7 +12,7 @@ function Post({onDelete, onLike, onEdit, id}) {
         textAlign: 'left',
         paddingLeft: '20px',
         paddingRight: '20px',
-        fontSize: '15px'
+        fontSize: '15px',
     }
     
     const icon = {
@@ -23,8 +23,7 @@ function Post({onDelete, onLike, onEdit, id}) {
     let {title, description, date, likes, tags, image} = post;
     const imgToUse = image ? image : frame;
     return (
-        <>
-            <Card sx={{ minWidth: 200 }}  >
+            <Card style={{height:"100%"}}  >
                 <h2>{title}</h2>
                 <p>{moment(date).format("MMMM Do YYYY, h:mm a")}</p >
                 <img src={imgToUse} alt="" width="200px" />
@@ -46,14 +45,12 @@ function Post({onDelete, onLike, onEdit, id}) {
                 </IconButton>
                 <span style={{marginRight: "10px", marginLeft: "10px"}}></span>
                 <IconButton aria-label="add to favorites" onClick={() => onDelete(id)}>
-                    <DeleteForeverIcon style={icon} />
+                    <DeleteIcon style={icon} />
                 </IconButton>
   
                 <div style={{marginBottom: "10px"}}></div>
                 
             </Card>
-
-        </>
     );
 }
 

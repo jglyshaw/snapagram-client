@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: false,
+  loggedIn: false,
 }
 
 export const accountSlice = createSlice({
@@ -9,7 +9,7 @@ export const accountSlice = createSlice({
   initialState,
   reducers: {
     setAccount: (state, action) => {
-      state.value = action.payload
+      state.loggedIn = action.payload
     },
   },
 })
