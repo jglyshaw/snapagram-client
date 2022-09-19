@@ -2,7 +2,7 @@ import Post from "../components/Post";
 import PostForm from '../components/PostForm';
 import Confirmation from "../components/Confirmation";
 import { Card, Snackbar, Grid, CircularProgress, Dialog, Button } from '@mui/material/';
-import { createPost, editPost, getPosts, deletePost, likePost } from "../api/api";
+import { createPost, editPost, getPosts, deletePost, likePost } from "../api/routes";
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from "react";
 import { setPosts, setCurrentID } from '../redux/posts'

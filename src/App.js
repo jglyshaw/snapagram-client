@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 import CounterPage from "./pages/CounterPage";
 import PostPage from "./pages/PostPage";
 import { Outlet, Link } from "react-router-dom";
-import { getPosts } from "./api/api";
+import { getPosts } from "./api/routes";
 import { useEffect } from "react";
 import { useDispatch  } from 'react-redux'
 import { setPosts } from './redux/posts'
