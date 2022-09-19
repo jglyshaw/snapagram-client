@@ -21,7 +21,6 @@ function CounterPage() {
             <p style={{ display: 'inline', marginLeft: 10, marginRight: 10 }}>{count}</p>
             <Button variant="contained" onClick={() => dispatch(increment())}>+</Button>
         </div>
-
     );
 }
 

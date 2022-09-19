@@ -1,13 +1,15 @@
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { Routes, Route, useNavigate } from 'react-router-dom'
 import { Card, IconButton } from '@mui/material';
+import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { setAccount } from '../redux/account'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -19,7 +21,7 @@ function SignupForm({ isSignup, onSubmitCall }) {
     }
 
     const formStyle = {
-        textAlign: "center",
+        textAlign: "left",
         width: "500px",
         display: "inline-block",
         padding: "20px",
@@ -37,35 +39,49 @@ function SignupForm({ isSignup, onSubmitCall }) {
         cursor: "pointer"
     }
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate();
-
     const [usernameField, setUsernameField] = useState("")
     const [passwordField, setPasswordField] = useState("")
     const [emailField, setEmailField] = useState("")
+    const [alertText, setAlertText] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [showAlert, setAlert] = useState(false);
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+
     const onSubmit = async (e) => {
         e.preventDefault()
-
         if (usernameField === "" || passwordField === "" || usernameField.includes(" ")) {
+            setAlertText("Invalid Form Data")
             setAlert(true)
             return;
         }
         setAlert(false)
-        dispatch(setAccount(true))
-        navigate('/');
 
+        let success = await onSubmitCall(usernameField, passwordField, null)
+        if (!success) {
+            setAlertText("Invalid Credentials")
+            setAlert(true)
+            return;
+        }
+        navigate("/")
+        dispatch(setAccount(true))
+        setUsernameField("")
+        setPasswordField("")
     }
 
     return (
         <Card style={formStyle}>
-        <form onSubmit={(e) => onSubmit(e)} >
-            {showAlert && <Alert severity="error">Invalid Form Data</Alert>}
-            <br />
-            <Grid container>
+            {isSignup &&
+                <IconButton aria-label="add to favorites" onClick={() => navigate("/login")}>
+                    <ArrowBackIcon  />
+                </IconButton>
+            }
 
+
+            <form onSubmit={(e) => onSubmit(e)} >
+                {showAlert && <Alert severity="error">{alertText}</Alert>}
+                <br />
                 <label style={{ marginBottom: "5px" }}>Username</label>
                 <TextField
                     value={usernameField}
@@ -93,13 +109,15 @@ function SignupForm({ isSignup, onSubmitCall }) {
                     size="small"
                 />
                 <FormControlLabel
-                    style={{marginLeft: "5px"}}
+                    style={{ marginLeft: "5px" }}
                     control={<Checkbox checked={showPassword} onChange={() => setShowPassword(!showPassword)} label="Show Password" />}
                     label="Show Password" />
 
                 <input type='submit' value={isSignup ? "Create Account" : "Sign In"} style={buttonStyle} />
-            </Grid>
-        </form>
+            </form>
+
+            {!isSignup && <input type='button' value="Create Account" style={buttonStyle} onClick={() => navigate("/signup")} />}
+
         </Card>)
 }
 

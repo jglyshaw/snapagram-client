@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import CounterPage from "./pages/CounterPage";
-import AccountPage from "./pages/AccountPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import PostPage from "./pages/PostPage";
 import { Outlet, Link } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -16,7 +17,7 @@ function App() {
   const dispatch = useDispatch()
   const loggedIn = useSelector((state) => state.accountReducer.loggedIn);
   let nav = loggedIn ? <Navbar /> : <Outlet />
-  let redirectUser = <Navigate to="/account" />
+  let redirectUser = <Navigate to="/login" />
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +41,8 @@ function App() {
             <Route index element={!loggedIn ?  redirectUser :  <p>Too lazy to make home page</p>} />
             <Route path="counter" element={!loggedIn ?  redirectUser :  <CounterPage />} />
             <Route path="posts" element={!loggedIn ?  redirectUser :  <PostPage />} />
-            <Route path="account" element={<AccountPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="signup" element={<SignupPage />} />
             <Route path="*" element={<p>Invalid Page</p>} />
           </Route>
         </Routes>
