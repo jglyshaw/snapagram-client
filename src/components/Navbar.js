@@ -2,22 +2,20 @@ import { Outlet, Link } from "react-router-dom";
 import blog from '../images/blog.png'
 import NavCSS from '../style/nav.css'
 import Button from '@mui/material/Button';
-import { setLoggedIn } from '../redux/account'
 import { useDispatch, useSelector  } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 
 
-function Navbar() {
+function Navbar({setLoggedIn, loggedIn}) {
   let user = JSON.parse(localStorage.getItem('profile'));
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
 
   const signOut = () => {
+    setLoggedIn(!loggedIn)
     localStorage.clear();
-    dispatch(setLoggedIn(false))
-    window.location.reload(false);
     navigate("/login")
   }
 

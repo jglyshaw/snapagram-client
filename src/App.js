@@ -3,24 +3,22 @@ import CounterPage from "./pages/CounterPage";
 import LoginPage from "./pages/LoginPage";
 import PostPage from "./pages/PostPage";
 import AllPosts from "./pages/AllPosts";
-import { Outlet, Link } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router";
 import { getAllPosts, getPosts } from "./api/routes";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from "react";
+import { useDispatch } from 'react-redux'
 import { setPosts, setUserPosts } from './redux/posts'
 
 
 function App() {
   const dispatch = useDispatch()
-
+  const [loggedIn2, setLoggedIn] = useState(false)
   let user = JSON.parse(localStorage.getItem('profile'));
-  let redux = useSelector((state) => state.accountReducer.loggedIn);
-  let loggedIn = user || redux ? true : false;
+  let loggedIn = user ? true : false;
   let redirectUser = <Navigate to="/login" />
-
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const result = await getAllPosts()
@@ -32,19 +30,19 @@ function App() {
       }
     };
     fetchData();
-  }, [dispatch]);
+  });
 
 
   return (
     <div>
       <BrowserRouter>
-        {loggedIn ? <Navbar /> : <></>}
+        {loggedIn ? <Navbar loggedIn={loggedIn2} setLoggedIn={setLoggedIn}/> : <></>}
         <Routes>
           <Route index element={!loggedIn ? redirectUser : <p>Too lazy to make home page</p>} />
           <Route path="counter" element={!loggedIn ? redirectUser : <CounterPage />} />
           <Route path="posts" element={!loggedIn ? redirectUser : <PostPage />} />
           <Route path="allposts" element={!loggedIn ? redirectUser : <AllPosts />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route path="login" element={<LoginPage loggedIn={loggedIn2} setLoggedIn = {setLoggedIn}/>} />
           <Route path="*" element={<p>Invalid Page</p>} />
         </Routes>
       </BrowserRouter>

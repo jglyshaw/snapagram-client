@@ -7,12 +7,11 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setLoggedIn, setAccount } from '../redux/account'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import IconButton from '@mui/material/IconButton';
 import banner from '../images/banner.png'
 
-function LoginPage() {
+function LoginPage({setLoggedIn, loggedIn}) {
     const backdrop = {
         fontFamily: 'sans-serif',
         padding: '50px',
@@ -47,7 +46,7 @@ function LoginPage() {
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        if (usernameField === "" || passwordField === "" || usernameField.includes(" ")) {
+        if (usernameField === "" || passwordField === "") {
             setAlertText("Invalid Form Data")
             setAlert(true)
             return;
@@ -57,20 +56,13 @@ function LoginPage() {
 
         let success;
 
-        if (isSignup) {
-            success = await onSignup()
-        }
-        else {
-            success = await onLogin()
-        }
+        isSignup ? success = await onSignup() : success = await onLogin()
 
         if (!success) {
             return
         }
-
-        dispatch(setLoggedIn(true))
-        navigate("/")
-        window.location.reload(false);
+        setLoggedIn(!loggedIn);
+        navigate("/posts")
         setUsernameField("")
         setPasswordField("")
     }
@@ -83,7 +75,6 @@ function LoginPage() {
                 password: passwordField,
             })
             let account = response.data.result
-            dispatch(setAccount(account))
             localStorage.setItem('profile', JSON.stringify({ account }))
             return true;
         } catch (error) {
@@ -101,7 +92,6 @@ function LoginPage() {
                 email: emailField
             })
             let account = response.data.result
-            dispatch(setAccount(account))
             localStorage.setItem('profile', JSON.stringify({ account }))
             return true;
         } catch (error) {
