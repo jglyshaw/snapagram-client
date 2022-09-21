@@ -6,7 +6,7 @@ import frame from '../images/profile.png'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 
-function Post({ onDelete, onLike, onEdit, id, isOwner }) {
+function Post({ onDelete, onLike, onEdit, postData, isOwner }) {
 
     const desc = {
         textAlign: 'left',
@@ -21,10 +21,9 @@ function Post({ onDelete, onLike, onEdit, id, isOwner }) {
         fontSize: "25px",
     }
 
-    const post = useSelector((state) => state.postReducer.value).filter(post => post._id === id)[0]
-    let { title, description, date, likes, tags, image, username } = post;
-
+    let { title, description, date, likes, tags, image, username, _id: id } = postData;
     const imgToUse = image ? image : frame;
+
     return (
         <Card style={{ position: "relative", height: "100%" }}  >
             <h2>{title}</h2>

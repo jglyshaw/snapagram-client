@@ -1,13 +1,15 @@
 import Alert from '@mui/material/Alert';
 import { useState } from "react";
 import { Card } from '@mui/material';
-import { signin } from "../api/routes";
+import { signin, signup } from "../api/routes";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setAccount } from '../redux/account'
+import { setLoggedIn, setAccount } from '../redux/account'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import IconButton from '@mui/material/IconButton';
 import banner from '../images/banner.png'
 
 function LoginPage() {
@@ -52,33 +54,69 @@ function LoginPage() {
         }
         setAlert(false)
 
-        try {
-            let response = await signin({
-                username: usernameField,
-                password: passwordField,
-            })
 
-            let account = response.data.result
-            localStorage.setItem('profile', JSON.stringify({ account }))
+        let success;
 
-
-        } catch (error) {
-            setAlertText("Invalid Credentials")
-            setAlert(true)
-            return;
+        if (isSignup) {
+            success = await onSignup()
+        }
+        else {
+            success = await onLogin()
         }
 
-        dispatch(setAccount(true))
+        if (!success) {
+            return
+        }
+
+        dispatch(setLoggedIn(true))
         navigate("/")
+        window.location.reload(false);
         setUsernameField("")
         setPasswordField("")
     }
 
 
+    const onLogin = async () => {
+        try {
+            let response = await signin({
+                username: usernameField,
+                password: passwordField,
+            })
+            let account = response.data.result
+            dispatch(setAccount(account))
+            localStorage.setItem('profile', JSON.stringify({ account }))
+            return true;
+        } catch (error) {
+            setAlertText("Invalid Credentials")
+            setAlert(true)
+            return false;
+        }
+    }
+
+    const onSignup = async () => {
+        try {
+            let response = await signup({
+                username: usernameField,
+                password: passwordField,
+                email: emailField
+            })
+            let account = response.data.result
+            dispatch(setAccount(account))
+            localStorage.setItem('profile', JSON.stringify({ account }))
+            return true;
+        } catch (error) {
+            setAlertText("Invalid Credentials")
+            setAlert(true)
+            return false;
+        }
+    }
+
     const [usernameField, setUsernameField] = useState("")
     const [passwordField, setPasswordField] = useState("")
+    const [emailField, setEmailField] = useState("")
     const [alertText, setAlertText] = useState("")
     const [showPassword, setShowPassword] = useState(false)
+    const [isSignup, setIsSignup] = useState(false)
     const [showAlert, setAlert] = useState(false);
 
     const dispatch = useDispatch()
@@ -91,6 +129,11 @@ function LoginPage() {
             <br />
             <br />
             <Card style={formStyle}>
+                {isSignup && <>
+                    <IconButton color="primary" aria-label="add to shopping cart" onClick={() => setIsSignup(false)}>
+                        <ArrowBackIosNewIcon />
+                    </IconButton>
+                </>}
 
                 <form onSubmit={(e) => onSubmit(e)} >
                     {showAlert && <Alert severity="error">{alertText}</Alert>}
@@ -102,6 +145,14 @@ function LoginPage() {
                         onChange={(e) => setUsernameField(e.target.value)}
                         size="small"
                     />
+
+                    {isSignup && <><label style={{ marginBottom: "5px" }}>Email</label>
+                        <TextField
+                            value={emailField}
+                            style={inputStyle}
+                            onChange={(e) => setEmailField(e.target.value)}
+                            size="small"
+                        /> </>}
 
                     <label style={{ marginBottom: "5px" }}>Password</label>
                     <TextField
@@ -119,7 +170,7 @@ function LoginPage() {
                     <input type='submit' value={"Sign In"} style={buttonStyle} />
                 </form>
 
-                {<input type='button' value="Create Account" style={buttonStyle} onClick={() => navigate("/signup")} />}
+                {!isSignup && <input type='button' value="Create Account" style={buttonStyle} onClick={() => setIsSignup(true)} />}
 
             </Card>
             <p>© 2022 Snapagram Inc.</p>

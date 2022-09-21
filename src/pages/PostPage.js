@@ -115,11 +115,11 @@ function PostPage() {
             <Grid container alignItems="stretch" >
                 {posts !== null && posts.map((post, id) => (
                     <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100" }}>
-                        <Post x
+                        <Post 
                             onDelete={() => { setShowDelete(true); dispatch(setCurrentID(post._id)) }}
                             onLike={likePostById}
                             onEdit={() => { setShowEdit(true); dispatch(setCurrentID(post._id)) }}
-                            id={post._id}
+                            postData = {post}
                             isOwner = {true} />
                     </Grid>
                 ))}

@@ -16,23 +16,16 @@ function AllPosts() {
         minHeight: '200px'
     }
     const dispatch = useDispatch()
-
     const posts = useSelector((state) => state.postReducer.value)
+
     const likePostById = async (id) => {
         await likePost(id)
-        reload()
-    }
-
-
-    const reload = async () => {
         const allPosts = await getAllPosts()
         dispatch(setPosts(allPosts.data))
     }
 
     return (
         <div style={backdrop}>
-       
-       
             <Grid container alignItems="stretch" >
                 {posts !== null && posts.map((post, id) => (
                     <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100" }}>
@@ -40,7 +33,7 @@ function AllPosts() {
                             onDelete={() => {  }}
                             onLike={(id) => {likePostById(id)}}
                             onEdit={() => { }}
-                            id={post._id} />
+                            postData={post} />
                     </Grid>
                 ))}
             </Grid>
