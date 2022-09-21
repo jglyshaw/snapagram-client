@@ -6,7 +6,7 @@ import frame from '../images/profile.png'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 
-function Post({ onDelete, onLike, onEdit, id }) {
+function Post({ onDelete, onLike, onEdit, id, isOwner }) {
 
     const desc = {
         textAlign: 'left',
@@ -21,13 +21,14 @@ function Post({ onDelete, onLike, onEdit, id }) {
         fontSize: "25px",
     }
 
-
     const post = useSelector((state) => state.postReducer.value).filter(post => post._id === id)[0]
-    let { title, description, date, likes, tags, image } = post;
+    let { title, description, date, likes, tags, image, username } = post;
+
     const imgToUse = image ? image : frame;
     return (
-        <Card style={{ position: "relative", height: "100%"}}  >
+        <Card style={{ position: "relative", height: "100%" }}  >
             <h2>{title}</h2>
+            <p>{username}</p>
             <p>{moment(date).format("MMMM Do YYYY, h:mm a")}</p >
             <img src={imgToUse} alt="" width="250px" />
             <p style={desc}><b>Description</b>: {description}</p>
@@ -40,17 +41,23 @@ function Post({ onDelete, onLike, onEdit, id }) {
             </p>
 
             <div style={{ position: "absolute", bottom: 10, left: 0, right: 0 }}>
+
+            {! isOwner && <>
                 <IconButton aria-label="add to favorites" onClick={() => onLike(id)}>
                     <FavoriteIcon style={icon} />
-                </IconButton>
+                </IconButton> </>}
+                {isOwner && <>
+
+                
+                    <IconButton aria-label="add to favorites" onClick={() => onEdit(id)}>
+                        <EditIcon style={icon} />
+                    </IconButton> </>}
+                    {isOwner && <>
                 <span style={buttonPadding}></span>
-                <IconButton aria-label="add to favorites" onClick={() => onEdit(id)}>
-                    <EditIcon style={icon} />
-                </IconButton>
-                <span style={buttonPadding}></span>
-                <IconButton aria-label="add to favorites" onClick={() => onDelete(id)}>
-                    <DeleteIcon style={icon} />
-                </IconButton>
+                
+                    <IconButton aria-label="add to favorites" onClick={() => onDelete(id)}>
+                        <DeleteIcon style={icon} />
+                    </IconButton> </>}
             </div>
             <div style={{ marginBottom: "60px" }}></div>
 

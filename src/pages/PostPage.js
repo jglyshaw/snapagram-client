@@ -2,10 +2,10 @@ import Post from "../components/Post";
 import PostForm from '../components/PostForm';
 import Confirmation from "../components/Confirmation";
 import { Card, Snackbar, Grid, CircularProgress, Dialog, Button } from '@mui/material/';
-import { createPost, editPost, getPosts, deletePost, likePost } from "../api/routes";
+import { createPost, editPost, getAllPosts, deletePost, likePost, getPosts } from "../api/routes";
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from "react";
-import { setPosts, setCurrentID } from '../redux/posts'
+import { setPosts, setCurrentID, setUserPosts} from '../redux/posts'
 
 function PostPage() {
     const backdrop = {
@@ -15,7 +15,7 @@ function PostPage() {
         minHeight: '200px'
     }
 
-    const posts = useSelector((state) => state.postReducer.value)
+    const posts = useSelector((state) => state.postReducer.userPosts)
     const currentID = useSelector((state) => state.postReducer.currentID)
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -23,6 +23,7 @@ function PostPage() {
     const [showSnack, setShowSnack] = useState(false);
     const [snackText, setSnackText] = useState("");
     const dispatch = useDispatch()
+    let user = JSON.parse(localStorage.getItem('profile')).account;
 
     const deletePostById = async () => {
         setSnackText("Post deleted")
@@ -47,14 +48,18 @@ function PostPage() {
             title: title,
             description: description,
             image: image,
-            tags: tags
+            tags: tags,
+            creatorID: user._id,
+            username: user.username
         })
         reload()
     }
 
     const reload = async () => {
-        const result = await getPosts()
-        dispatch(setPosts(result.data))
+        const result = await getPosts(user._id)
+        const allPosts = await getAllPosts()
+        dispatch(setUserPosts(result.data))
+        dispatch(setPosts(allPosts.data))
     }
 
     const onEditPost = async (title, description, image, tags) => {
@@ -72,16 +77,16 @@ function PostPage() {
 
     return (
         <div style={backdrop}>
-            <Card style = {{marginBottom: "30px", margin: "10px"}}>
+            <Card style={{ marginBottom: "30px", margin: "10px" }}>
                 <Grid container
                     direction="row"
                     justifyContent="center"
-                    alignItems="center" 
+                    alignItems="center"
                 >
-                    <Grid item sm={12} md = {4}> <h3>Your Posts</h3> </Grid>
-                    <Grid item sm={12} md = {4}><Button variant="contained" onClick={() => {dispatch(setCurrentID(0)); setShowCreate(true)}}>
+                    <Grid item sm={12} md={4}> <h3>Your Posts</h3> </Grid>
+                    <Grid item sm={12} md={4}><Button variant="contained" onClick={() => { dispatch(setCurrentID(0)); setShowCreate(true) }}>
                         Create new Post</Button></Grid>
-                    <Grid item sm={12} md = {4}> {posts !== null && <h3>Posts: {posts.length} </h3>} </Grid>
+                    <Grid item sm={12} md={4}> {posts !== null && <h3>Posts: {posts.length} </h3>} </Grid>
                 </Grid>
             </Card>
 
@@ -109,12 +114,13 @@ function PostPage() {
 
             <Grid container alignItems="stretch" >
                 {posts !== null && posts.map((post, id) => (
-                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100"}}>
+                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100" }}>
                         <Post x
-                            onDelete={() => {setShowDelete(true); dispatch(setCurrentID(post._id))}}
+                            onDelete={() => { setShowDelete(true); dispatch(setCurrentID(post._id)) }}
                             onLike={likePostById}
-                            onEdit={() => {setShowEdit(true); dispatch(setCurrentID(post._id))}}
-                            id={post._id}  />
+                            onEdit={() => { setShowEdit(true); dispatch(setCurrentID(post._id)) }}
+                            id={post._id}
+                            isOwner = {true} />
                     </Grid>
                 ))}
             </Grid>

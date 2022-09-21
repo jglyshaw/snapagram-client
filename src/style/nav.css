@@ -5,6 +5,9 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #333;
+    text-align: center;
+    vertical-align: center;
+
     width: 100%;
   }
   

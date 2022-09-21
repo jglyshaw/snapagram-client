@@ -3,7 +3,8 @@ import axios from 'axios';
 const postUrl = 'https://snapagram-server.herokuapp.com/posts';
 const accountUrl = 'https://snapagram-server.herokuapp.com/account';
 
-export const getPosts = () => axios.get(postUrl);
+export const getPosts = (accountID) => axios.get(`${postUrl}/${accountID}`);
+export const getAllPosts = () => axios.get(postUrl);
 export const createPost = (newPost) => axios.post(postUrl, newPost);
 export const deletePost = (id) => axios.delete(`${postUrl}/${id}`);
 export const likePost = (id) => axios.patch(`${postUrl}/like/${id}`);
