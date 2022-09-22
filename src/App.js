@@ -1,5 +1,4 @@
 import Navbar from "./components/Navbar";
-import CounterPage from "./pages/CounterPage";
 import LoginPage from "./pages/LoginPage";
 import PostPage from "./pages/PostPage";
 import AllPosts from "./pages/AllPosts";
@@ -13,9 +12,10 @@ import { setPosts, setUserPosts } from './redux/posts'
 
 function App() {
   const dispatch = useDispatch()
-  const [loggedIn2, setLoggedIn] = useState(false)
   let user = JSON.parse(localStorage.getItem('profile'));
-  let loggedIn = user ? true : false;
+  let hasUserStored = user ? true : false;
+  const [loggedIn, setLoggedIn] = useState(hasUserStored)
+
   let redirectUser = <Navigate to="/login" />
   useEffect(() => {
 
@@ -36,13 +36,12 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        {loggedIn ? <Navbar loggedIn={loggedIn2} setLoggedIn={setLoggedIn}/> : <></>}
+        {loggedIn ? <Navbar setLoggedIn={setLoggedIn}/> : <></>}
         <Routes>
           <Route index element={!loggedIn ? redirectUser : <p>Too lazy to make home page</p>} />
-          <Route path="counter" element={!loggedIn ? redirectUser : <CounterPage />} />
           <Route path="posts" element={!loggedIn ? redirectUser : <PostPage />} />
           <Route path="allposts" element={!loggedIn ? redirectUser : <AllPosts />} />
-          <Route path="login" element={<LoginPage loggedIn={loggedIn2} setLoggedIn = {setLoggedIn}/>} />
+          <Route path="login" element={<LoginPage setLoggedIn = {setLoggedIn}/>} />
           <Route path="*" element={<p>Invalid Page</p>} />
         </Routes>
       </BrowserRouter>

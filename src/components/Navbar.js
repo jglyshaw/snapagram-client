@@ -7,14 +7,14 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-function Navbar({setLoggedIn, loggedIn}) {
+function Navbar({setLoggedIn}) {
   let user = JSON.parse(localStorage.getItem('profile'));
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
 
   const signOut = () => {
-    setLoggedIn(!loggedIn)
+    setLoggedIn(false)
     localStorage.clear();
     navigate("/login")
   }
@@ -25,10 +25,9 @@ function Navbar({setLoggedIn, loggedIn}) {
             <div style = {{padding: "20px"}}>
                 <li><img src={blog} alt = "" width="40" style = {{marginRight: "10px"}}/></li>
                 <li><Link to="/">Home</Link></li>
-                <li><Link to="/counter">Counter</Link></li>
                 <li><Link to="/allposts">Posts</Link></li>
                 <li><Link to="/posts">Your Posts</Link></li>
-                <li style={{color:"white"}}>User: {user? user.account.username : null}</li>
+                {/* <li style={{color:"white"}}>User: {user? user.account.username : null}</li> */}
                 <Button variant="contained" onClick = {signOut}>Sign Out</Button>
             </div>
             </ul>

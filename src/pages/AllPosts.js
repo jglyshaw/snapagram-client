@@ -28,7 +28,7 @@ function AllPosts() {
         <div style={backdrop}>
             <Grid container alignItems="stretch" >
                 {posts !== null && posts.map((post, id) => (
-                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100" }}>
+                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "15px" }}>
                         <Post 
                             onDelete={() => {  }}
                             onLike={(id) => {likePostById(id)}}

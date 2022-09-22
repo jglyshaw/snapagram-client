@@ -77,7 +77,7 @@ function PostPage() {
 
     return (
         <div style={backdrop}>
-            <Card style={{ marginBottom: "30px", margin: "10px" }}>
+            <Card style={{ marginBottom: "30px", margin: "15px", backgroundColor: "#fffffd"  }}>
                 <Grid container
                     direction="row"
                     justifyContent="center"
@@ -114,7 +114,7 @@ function PostPage() {
 
             <Grid container alignItems="stretch" >
                 {posts !== null && posts.map((post, id) => (
-                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "10px", height: "100" }}>
+                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "15px" }}>
                         <Post 
                             onDelete={() => { setShowDelete(true); dispatch(setCurrentID(post._id)) }}
                             onLike={likePostById}

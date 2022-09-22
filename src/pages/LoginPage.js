@@ -5,13 +5,12 @@ import { signin, signup } from "../api/routes";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import IconButton from '@mui/material/IconButton';
 import banner from '../images/banner.png'
 
-function LoginPage({setLoggedIn, loggedIn}) {
+function LoginPage({setLoggedIn}) {
     const backdrop = {
         fontFamily: 'sans-serif',
         padding: '50px',
@@ -27,6 +26,7 @@ function LoginPage({setLoggedIn, loggedIn}) {
     const formStyle = {
         textAlign: "left",
         width: "500px",
+        maxWidth: "80%",
         display: "inline-block",
         padding: "20px",
         backgroundColor: "white"
@@ -61,7 +61,7 @@ function LoginPage({setLoggedIn, loggedIn}) {
         if (!success) {
             return
         }
-        setLoggedIn(!loggedIn);
+        setLoggedIn(true);
         navigate("/posts")
         setUsernameField("")
         setPasswordField("")
@@ -101,6 +101,12 @@ function LoginPage({setLoggedIn, loggedIn}) {
         }
     }
 
+    const handleSwitch = (isSignup) => {
+        setUsernameField("")
+        setPasswordField("")
+        setIsSignup(isSignup)
+    }
+
     const [usernameField, setUsernameField] = useState("")
     const [passwordField, setPasswordField] = useState("")
     const [emailField, setEmailField] = useState("")
@@ -109,9 +115,7 @@ function LoginPage({setLoggedIn, loggedIn}) {
     const [isSignup, setIsSignup] = useState(false)
     const [showAlert, setAlert] = useState(false);
 
-    const dispatch = useDispatch()
     const navigate = useNavigate();
-
 
     return (
         <div style={backdrop}>
@@ -120,7 +124,7 @@ function LoginPage({setLoggedIn, loggedIn}) {
             <br />
             <Card style={formStyle}>
                 {isSignup && <>
-                    <IconButton color="primary" aria-label="add to shopping cart" onClick={() => setIsSignup(false)}>
+                    <IconButton color="primary" aria-label="add to shopping cart" onClick={() => handleSwitch(false)}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
                 </>}
@@ -160,7 +164,7 @@ function LoginPage({setLoggedIn, loggedIn}) {
                     <input type='submit' value={"Sign In"} style={buttonStyle} />
                 </form>
 
-                {!isSignup && <input type='button' value="Create Account" style={buttonStyle} onClick={() => setIsSignup(true)} />}
+                {!isSignup && <input type='button' value="Create Account" style={buttonStyle} onClick={() => handleSwitch(true)} />}
 
             </Card>
             <p>© 2022 Snapagram Inc.</p>
