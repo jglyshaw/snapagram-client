@@ -104,6 +104,7 @@ function LoginPage({setLoggedIn}) {
     const handleSwitch = (isSignup) => {
         setUsernameField("")
         setPasswordField("")
+        setAlert(false)
         setIsSignup(isSignup)
     }
 
@@ -161,7 +162,7 @@ function LoginPage({setLoggedIn}) {
                         control={<Checkbox checked={showPassword} onChange={() => setShowPassword(!showPassword)} label="Show Password" />}
                         label="Show Password" />
 
-                    <input type='submit' value={"Sign In"} style={buttonStyle} />
+                    <input type='submit' value={isSignup ? "Sign Up" : "Sign In"} style={buttonStyle} />
                 </form>
 
                 {!isSignup && <input type='button' value="Create Account" style={buttonStyle} onClick={() => handleSwitch(true)} />}

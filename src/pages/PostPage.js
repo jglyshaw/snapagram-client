@@ -78,16 +78,11 @@ function PostPage() {
     return (
         <div style={backdrop}>
             <Card style={{ marginBottom: "30px", margin: "15px", backgroundColor: "#fffffd"  }}>
-                <Grid container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Grid item sm={12} md={4}> <h3>Your Posts</h3> </Grid>
-                    <Grid item sm={12} md={4}><Button variant="contained" onClick={() => { dispatch(setCurrentID(0)); setShowCreate(true) }}>
-                        Create new Post</Button></Grid>
-                    <Grid item sm={12} md={4}> {posts !== null && <h3>Posts: {posts.length} </h3>} </Grid>
-                </Grid>
+             
+                
+                 {posts !== null && <h3>Posts: {posts.length} </h3>} 
+                   <Button variant="" style = {{marginBottom: "15px"}}onClick={() => { dispatch(setCurrentID(0)); setShowCreate(true) }}>
+                        Create new Post</Button>
             </Card>
 
             <Snackbar
