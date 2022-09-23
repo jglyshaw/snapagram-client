@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import PostPage from "./pages/PostPage";
 import AllPosts from "./pages/AllPosts";
+import AccountPage from "./pages/AccountPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router";
 import { getAllPosts, getPosts } from "./api/routes";
@@ -12,11 +13,10 @@ import { setPosts, setUserPosts } from './redux/posts'
 
 function App() {
   const dispatch = useDispatch()
-  let user = JSON.parse(localStorage.getItem('profile'));
-  let hasUserStored = user ? true : false;
-  const [loggedIn, setLoggedIn] = useState(hasUserStored)
+  const user = JSON.parse(localStorage.getItem('profile'));
+  const [loggedIn, setLoggedIn] = useState(user ? true : false)
+  const redirectUser = <Navigate to="/login" />
 
-  let redirectUser = <Navigate to="/login" />
   useEffect(() => {
 
     const fetchData = async () => {
@@ -41,6 +41,7 @@ function App() {
           <Route index element={!loggedIn ? redirectUser : <p>Too lazy to make home page</p>} />
           <Route path="posts" element={!loggedIn ? redirectUser : <PostPage />} />
           <Route path="allposts" element={!loggedIn ? redirectUser : <AllPosts />} />
+          <Route path="account" element={!loggedIn ? redirectUser : <AccountPage />} />
           <Route path="login" element={<LoginPage setLoggedIn = {setLoggedIn}/>} />
           <Route path="*" element={<p>Invalid Page</p>} />
         </Routes>

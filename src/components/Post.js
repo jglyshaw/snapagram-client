@@ -41,7 +41,7 @@ function Post({ onDelete, onLike, onEdit, postData, isOwner }) {
             <p style={desc}><b>Description</b>: {description}</p>
             <p style={desc}><b>Likes</b>: {likes}</p>
             {tags[0] !== '' && tags.map((tag, id) => (
-                <Chip id ={id} style={{ margin: "5px"}} label={tag} variant="Filled" />))
+                <Chip key ={id} style={{ margin: "5px"}} label={tag} variant="Filled" />))
             }
 
             <div style={{ position: "absolute", bottom: 10, left: 0, right: 0 }}>
