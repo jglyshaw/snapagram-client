@@ -4,12 +4,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useSelector } from 'react-redux'
 
-
-function Confirmation({onDelete, onClose, open}) {
-    
-    const currentPost = useSelector((state) => state.postReducer.currentID)
+function Confirmation({onDelete, onClose, open, id}) {
     
     return ( <>
              <Dialog
@@ -28,7 +24,7 @@ function Confirmation({onDelete, onClose, open}) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose}>Cancel</Button>
-                    <Button onClick={() => onDelete(currentPost.id)} autoFocus>
+                    <Button onClick={() => onDelete(id)} autoFocus>
                         Delete
                     </Button>
                 </DialogActions>

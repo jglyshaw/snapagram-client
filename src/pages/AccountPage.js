@@ -6,7 +6,7 @@ function AccountPage() {
 
     return (<>
 
-        <Paper style={{ margin: "50px", padding: "100px" }}>
+        <Paper style={{ margin: "20px", padding: "20px" }}>
             <div style={{ textAlign: "center" }}>
                 <div style={{ display: "inline-block", textAlign: "left"}}>
                     <h1>Username: {user.username}</h1>

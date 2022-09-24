@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: "test",
-  showSnack: true
+  value: "",
+  showSnack: false
 }
 
 export const snackSlice = createSlice({

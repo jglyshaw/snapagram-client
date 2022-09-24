@@ -24,7 +24,7 @@ function PostView() {
     const [post, setPost] = useState()
 
     return (<>
-        <div style={{paddingTop: "20px", paddingBottom: "20px", display: "flex", margin:"0 auto",  width: "500px"}}>
+        <div style={{paddingTop: "20px", paddingBottom: "20px", display: "flex", margin:"0 auto",  maxWidth: "80%", width: "500px"}}>
             {post && <Post postData={post} />}
         </div>
     </>);

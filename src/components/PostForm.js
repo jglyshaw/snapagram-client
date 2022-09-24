@@ -4,10 +4,9 @@ import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 
-function PostForm({ onSubmitCall }) {
+function PostForm({ onSubmitCall, id }) {
 
-    const currentID = useSelector((state) => state.postReducer.currentID)
-    const currentPost = useSelector((state) => state.postReducer.value).filter(post => post._id === currentID)[0]
+    const currentPost = useSelector((state) => state.postReducer.value).filter(post => post._id === id)[0]
 
     const [titleField, setTitleField] = useState(currentPost ? currentPost.title : "")
     const [imageField, setImageField] = useState(currentPost ? currentPost.image : "")
