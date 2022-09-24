@@ -13,17 +13,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const ResponsiveAppBar = ({ setLoggedIn }) => {
 
-  let user = JSON.parse(localStorage.getItem('profile'));
-  const dispatch = useDispatch()
+  let user = JSON.parse(localStorage.getItem('profile')).account;
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,8 +30,17 @@ const ResponsiveAppBar = ({ setLoggedIn }) => {
     setAnchorEl(null);
   };
 
-  const linkStyle = { color: "white", textTransform: "capitalize", textDecoration: "none", height: "100%", padding: "10px" }
-  const menuStyle = { color: "black", textTransform: "capitalize", textDecoration: "none"}
+  const Links = ({color}) => {
+    return (
+      <>
+        <Link to="/allposts" style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
+          <MenuItem onClick={handleClose}>All Posts</MenuItem></Link>
+        <Link to="/posts" style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
+          <MenuItem onClick={handleClose}>My Posts</MenuItem></Link>
+        <Link to={`/account/${user.username}`} style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
+          <MenuItem onClick={handleClose}>Account</MenuItem></Link>
+      </>)
+  }
 
   const signOut = () => {
     setLoggedIn(false)
@@ -46,12 +54,14 @@ const ResponsiveAppBar = ({ setLoggedIn }) => {
         <Toolbar disableGutters>
 
           <Box sx={{ display: { xs: 'none', md: "inline" } }}>
-            <img src={blog} alt="" width="40" style={{ marginRight: "10px"}}  />
+            <img src={blog} alt="" width="40" style={{ marginRight: "10px" }} />
           </Box>
           <Typography
             noWrap
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontFamily: 'monospace', fontWeight: 900,
-              letterSpacing: '.1rem', color: 'inherit', textDecoration: 'none', marginRight: "30px"}} >
+            sx={{
+              mr: 2, display: { xs: 'none', md: 'flex' }, fontFamily: 'monospace', fontWeight: 900,
+              letterSpacing: '.05rem', color: 'inherit', textDecoration: 'none', marginRight: "30px"
+            }} >
             Snapagram
           </Typography>
 
@@ -76,34 +86,32 @@ const ResponsiveAppBar = ({ setLoggedIn }) => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <Link to="/allposts" style ={menuStyle} ><MenuItem onClick={handleClose}>All Posts</MenuItem></Link>
-              <Link to="/posts" style ={menuStyle} ><MenuItem onClick={handleClose}>My Posts</MenuItem></Link>
-              <Link to="/account" style ={menuStyle} ><MenuItem onClick={handleClose}>Account</MenuItem></Link>
+              <Links color="black"/>
               <MenuItem onClick={signOut}>Logout</MenuItem>
             </Menu>
           </Box>
 
           <Box sx={{ display: { xs: 'inline', md: "none" } }}>
-            <img src={blog} alt="" width="40" style={{ marginRight: "10px"}}  />
+            <img src={blog} alt="" width="40" style={{ marginRight: "10px" }} />
           </Box>
           <Typography
             noWrap
-            sx={{mr: 2,display: { xs: 'flex', md: 'none' }, flexGrow: 1, fontFamily: 'monospace',fontWeight: 700,
-              letterSpacing: '.3rem',color: 'inherit',textDecoration: 'none', }}>
+            sx={{
+              mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, fontFamily: 'monospace', fontWeight: 700,
+              letterSpacing: '.05rem', color: 'inherit', textDecoration: 'none',
+            }}>
             Snapagram
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Link to="/allposts" style={linkStyle}>All Posts</Link>
-            <Link to="/posts" style={linkStyle}>Your Posts</Link>
-            <Link to="/account" style={linkStyle}>Account</Link>
+            <Links color="white" />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Button variant="contained" style={{ marginRight: "20px" }} sx={{ display: { xs: 'none', md: 'inline' } }} onClick={signOut}>Logout</Button>
-            <Tooltip title={user.account.username}>
+            <Tooltip title={user.username}>
               <IconButton sx={{ p: 0 }}>
-                <Avatar alt={user.account.username} src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.username} src={user.image} />
               </IconButton>
             </Tooltip>
           </Box>

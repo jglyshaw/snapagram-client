@@ -1,25 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: 0,
+  value: null,
+  userPosts: null,
+  currentID: 12
 }
 
-export const counterSlice = createSlice({
-  name: 'counter',
+export const postSlice = createSlice({
+  name: 'posts',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    setPosts: (state, action) => {
+      state.value = action.payload
     },
-    decrement: (state) => {
-      state.value -= 1
+    setUserPosts: (state, action) => {
+      state.userPosts = action.payload
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
+    setCurrentID: (state, action) => {
+      state.currentID = action.payload
     },
   },
 })
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { setPosts, setCurrentID, setUserPosts } = postSlice.actions
 
-export default counterSlice.reducer
+export default postSlice.reducer

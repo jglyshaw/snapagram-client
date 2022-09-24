@@ -1,0 +1,24 @@
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = {
+  value: "test",
+  showSnack: true
+}
+
+export const snackSlice = createSlice({
+  name: 'posts',
+  initialState,
+  reducers: {
+    setText: (state, action) => {
+      state.value = action.payload
+      state.showSnack = true
+    },
+    setShow: (state, action) => {
+      state.showSnack = action.payload
+    },
+  },
+})
+
+export const { setText, setShow } = snackSlice.actions
+
+export default snackSlice.reducer

@@ -74,7 +74,7 @@ function LoginPage({setLoggedIn}) {
                 username: usernameField,
                 password: passwordField,
             })
-            let account = response.data.result
+            let account = response.data
             localStorage.setItem('profile', JSON.stringify({ account }))
             return true;
         } catch (error) {
@@ -91,7 +91,7 @@ function LoginPage({setLoggedIn}) {
                 password: passwordField,
                 email: emailField
             })
-            let account = response.data.result
+            let account = response.data
             localStorage.setItem('profile', JSON.stringify({ account }))
             return true;
         } catch (error) {
