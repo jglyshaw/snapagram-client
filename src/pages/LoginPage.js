@@ -1,6 +1,6 @@
 import Alert from '@mui/material/Alert';
 import { useState } from "react";
-import { Card } from '@mui/material';
+import { Card, Button } from '@mui/material';
 import { signin, signup } from "../api/routes";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
@@ -10,18 +10,9 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import IconButton from '@mui/material/IconButton';
 import banner from '../images/banner.png'
 
-function LoginPage({setLoggedIn}) {
-    const backdrop = {
-        fontFamily: 'sans-serif',
-        padding: '50px',
-        textAlign: 'center',
-    }
-
-
-    const inputStyle = {
-        marginBottom: "25px",
-        width: "100%"
-    }
+function LoginPage({ setLoggedIn }) {
+    const backdrop = { fontFamily: 'sans-serif', padding: '50px', textAlign: 'center' }
+    const inputStyle = { marginBottom: "25px", width: "100%" }
 
     const formStyle = {
         textAlign: "left",
@@ -34,13 +25,8 @@ function LoginPage({setLoggedIn}) {
 
     const buttonStyle = {
         width: "100%",
-        backgroundColor: "#4CAF50",
-        color: "white",
-        padding: "14px 20px",
-        margin: "8px 0",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer"
+        marginBottom: "10px",
+        marginTop: "10px"
     }
 
 
@@ -120,8 +106,7 @@ function LoginPage({setLoggedIn}) {
 
     return (
         <div style={backdrop}>
-            <img src={banner} width="250" alt="banner" />
-            <br />
+            <img src={banner} width="250" alt="banner" style = {{marginBottom: "20px"}}/>
             <br />
             <Card style={formStyle}>
                 {isSignup && <>
@@ -161,11 +146,10 @@ function LoginPage({setLoggedIn}) {
                         style={{ marginLeft: "5px" }}
                         control={<Checkbox checked={showPassword} onChange={() => setShowPassword(!showPassword)} label="Show Password" />}
                         label="Show Password" />
-
-                    <input type='submit' value={isSignup ? "Sign Up" : "Sign In"} style={buttonStyle} />
+                    <Button type='submit' style={buttonStyle} variant="contained">{isSignup ? "Sign Up" : "Sign In"}</Button>
                 </form>
 
-                {!isSignup && <input type='button' value="Create Account" style={buttonStyle} onClick={() => handleSwitch(true)} />}
+                {!isSignup && <Button style={buttonStyle} variant="contained" onClick={() => handleSwitch(true)}>Create Account</Button>} 
 
             </Card>
             <p>© 2022 Snapagram Inc.</p>

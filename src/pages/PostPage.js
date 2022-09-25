@@ -1,6 +1,6 @@
-import Post from "../components/Post";
 import PostForm from '../components/PostForm';
-import { Card, Grid, CircularProgress, Dialog, Button } from '@mui/material/';
+import PostGrid from '../components/PostGrid';
+import { Card, Dialog, Button } from '@mui/material/';
 import { createPost, getAllPosts, getPosts } from "../api/routes";
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from "react";
@@ -8,11 +8,6 @@ import { setPosts, setUserPosts } from '../redux/posts'
 import {  setText } from '../redux/snack'
 
 function PostPage() {
-    const backdrop = {
-        fontFamily: 'sans-serif',
-        padding: '50px',
-        textAlign: 'center',
-    }
 
     const posts = useSelector((state) => state.postReducer.userPosts)
     const [showCreate, setShowCreate] = useState(false);
@@ -39,8 +34,8 @@ function PostPage() {
     }
 
     return (
-        <div style={backdrop}>
-            <Card style={{ marginBottom: "30px", margin: "15px" }}>
+       <>
+            <Card style={{ marginBottom: "30px", margin: "15px", textAlign: "center" }}>
                 {posts !== null && <h3>Posts: {posts.length} </h3>}
                 <Button variant="contained" style={{ marginBottom: "15px" }} onClick={() => { setShowCreate(true) }}>
                     Create new Post</Button>
@@ -51,17 +46,11 @@ function PostPage() {
                 <PostForm onSubmitCall={onAddPost} />
             </Dialog>
 
-            {posts === null && <CircularProgress />}
             {posts !== null && posts.length === 0 && <h3>You haven't created any posts</h3>}
+            <PostGrid posts={posts} />
 
-            <Grid container alignItems="stretch" >
-                {posts !== null && posts.map((post, id) => (
-                    <Grid item key={id} xs={12} sm={6} md={4} style={{ padding: "15px" }}>
-                        <Post postData={post}/>
-                    </Grid>
-                ))}
-            </Grid>
-        </div>
+       
+        </>
     );
 }
 

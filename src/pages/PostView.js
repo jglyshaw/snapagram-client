@@ -1,12 +1,11 @@
 import { useParams } from "react-router-dom";
-import { createPost, editPost, getAllPosts, deletePost, likePost, getPosts, getPost } from "../api/routes";
+import { getPost } from "../api/routes";
 import { useEffect, useState } from "react";
-import { Card, Snackbar, Grid, CircularProgress, Dialog, Button } from '@mui/material/';
 import Post from "../components/Post";
 
 function PostView() {
     const params = useParams();
-
+    const [post, setPost] = useState()
 
     useEffect(() => {
 
@@ -21,7 +20,6 @@ function PostView() {
         fetchData();
     }, [params.postId]);
 
-    const [post, setPost] = useState()
 
     return (<>
         <div style={{paddingTop: "20px", paddingBottom: "20px", display: "flex", margin:"0 auto",  maxWidth: "80%", width: "500px"}}>

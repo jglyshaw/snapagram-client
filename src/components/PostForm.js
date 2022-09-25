@@ -1,30 +1,19 @@
 import { useState } from "react";
-import { useSelector } from 'react-redux'
+import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 
-function PostForm({ onSubmitCall, id }) {
+function PostForm({ onSubmitCall, post }) {
 
-    const currentPost = useSelector((state) => state.postReducer.value).filter(post => post._id === id)[0]
-
-    const [titleField, setTitleField] = useState(currentPost ? currentPost.title : "")
-    const [imageField, setImageField] = useState(currentPost ? currentPost.image : "")
-    const [descriptionField, setDescriptionField] = useState(currentPost ? currentPost.description : "")
-    const [tagField, setTagField] = useState(currentPost ? currentPost.tags.toString() : "")
+    const [titleField, setTitleField] = useState(post ? post.title : "")
+    const [imageField, setImageField] = useState(post ? post.image : "")
+    const [descriptionField, setDescriptionField] = useState(post ? post.description : "")
+    const [tagField, setTagField] = useState(post ? post.tags.toString() : "")
     const [showAlert, setAlert] = useState(false);
 
     const inputStyle = { width: "100%", marginBottom: "20px" }
-    const buttonStyle = {
-        width: "100%",
-        backgroundColor: "#4CAF50",
-        color: "white",
-        padding: "14px 20px",
-        margin: "8px 0",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer"
-      }
+    const buttonStyle = { width: "100%" }
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -83,7 +72,7 @@ function PostForm({ onSubmitCall, id }) {
                     size="small"
                 />
 
-                <input type='submit' value='Save Post' style={buttonStyle} />
+                <Button type='submit' style={buttonStyle} variant="contained">Save Post</Button>
             </Grid>
         </form>
     </>);

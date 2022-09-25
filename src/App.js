@@ -3,15 +3,16 @@ import LoginPage from "./pages/LoginPage";
 import PostPage from "./pages/PostPage";
 import AllPosts from "./pages/AllPosts";
 import AccountPage from "./pages/AccountPage";
+import UserPage from "./pages/UserPage";
 import PostView from "./pages/PostView";
-import { Snackbar} from '@mui/material/';
+import { Snackbar } from '@mui/material/';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router";
 import { getAllPosts, getPosts } from "./api/routes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { setPosts, setUserPosts } from './redux/posts'
-import { setShow, setText } from './redux/snack'
+import { setShow } from './redux/snack'
 
 
 
@@ -21,11 +22,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(user ? true : false)
   const redirectUser = <Navigate to="/login" />
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getAllPosts()
-        const userPosts = result.data.filter((item) => item.username === user.account.username)
+        const userPosts = result.data.filter((item) => item.creatorID === user.account._id)
         dispatch(setPosts(result.data))
         dispatch(setUserPosts(userPosts))
       } catch (error) {
@@ -36,14 +38,14 @@ function App() {
   }, [dispatch, user]);
 
   return (
-    <div>
+    <div style={{fontFamily: 'sans-serif'}}>
       <Snackbar
-        open={useSelector((state) => state.snackReducer.showSnack )}
+        open={useSelector((state) => state.snackReducer.showSnack)}
         onClose={() => dispatch(setShow(false))}
         autoHideDuration={2000}
         message={useSelector((state) => state.snackReducer.value)}
       />
-      
+
       <BrowserRouter>
         {loggedIn ? <Navbar setLoggedIn={setLoggedIn} /> : <></>}
         <Routes>
@@ -54,6 +56,7 @@ function App() {
           <Route path="login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
           <Route path="account/:user" element={!loggedIn ? redirectUser : <AccountPage />} />
           <Route path="post/:postId" element={!loggedIn ? redirectUser : <PostView />} />
+          <Route path="user/:userID" element={!loggedIn ? redirectUser : <UserPage />} />
           <Route path="*" element={<p>Invalid Page</p>} />
         </Routes>
       </BrowserRouter>
