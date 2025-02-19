@@ -5,6 +5,7 @@ import AllPosts from "./pages/AllPosts";
 import AccountPage from "./pages/AccountPage";
 import UserPage from "./pages/UserPage";
 import PostView from "./pages/PostView";
+
 import { Snackbar } from '@mui/material/';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router";
@@ -50,14 +51,15 @@ function App() {
         {loggedIn ? <Navbar setLoggedIn={setLoggedIn} /> : <></>}
         <Routes>
           <Route index element={!loggedIn ? redirectUser : <p>Too lazy to make home page</p>} />
-          <Route path="posts" element={!loggedIn ? redirectUser : <PostPage />} />
-          <Route path="allposts" element={!loggedIn ? redirectUser : <AllPosts />} />
-          <Route path="allposts" element={!loggedIn ? redirectUser : <AllPosts />} />
-          <Route path="login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
+          <Route path="login"         element={<LoginPage setLoggedIn={setLoggedIn} />} />
+        
+          <Route path="posts"         element={!loggedIn ? redirectUser : <PostPage />} />
+          <Route path="allposts"      element={!loggedIn ? redirectUser : <AllPosts />} />
           <Route path="account/:user" element={!loggedIn ? redirectUser : <AccountPage />} />
-          <Route path="post/:postId" element={!loggedIn ? redirectUser : <PostView />} />
-          <Route path="user/:userID" element={!loggedIn ? redirectUser : <UserPage />} />
-          <Route path="*" element={<p>Invalid Page</p>} />
+          <Route path="post/:postId"  element={!loggedIn ? redirectUser : <PostView />} />
+          <Route path="user/:userID"  element={!loggedIn ? redirectUser : <UserPage />} />
+  
+          <Route path="*"             element={<p>Invalid Page</p>} />
         </Routes>
       </BrowserRouter>
     </div>
