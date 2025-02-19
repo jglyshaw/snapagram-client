@@ -4,3 +4,6 @@ This project is just for fun/my own personal education.
 
 ## Hosting
 The website uses an API that I deployed onto Heroku. The website is currently being hosted on snapagram.netlify.app.
+
+First run `npm install`
+then `npm start`
