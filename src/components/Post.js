@@ -1,45 +1,47 @@
-import { Card, IconButton, Chip, Dialog, Button, TextField } from '@mui/material';
-import emptyImage from '../images/profile.png'
-import moment from 'moment'
+// Local Components
 import Confirmation from './Confirmation';
 import PostForm from './PostForm';
+
+// Local APIs
+import { editPost, getAllPosts, deletePost, likePost, getMyPosts, commentPost } from "../api/routes";
+
+// Local Images
+import emptyImage from '../images/profile.png'
+
+// External MUI Imports
+import { Card, IconButton, Chip, Dialog, Button, TextField } from '@mui/material';
 import { Comment, Favorite, Delete, Edit } from '@mui/icons-material';
+
+// External Imports
 import { useState } from "react";
-import { editPost, getAllPosts, deletePost, likePost, getPosts, commentPost } from "../api/routes";
-import { useDispatch } from 'react-redux'
-import { Link } from "react-router-dom";
+import moment from 'moment'
 import { setText } from '../redux/snack'
 import { setPosts, setUserPosts } from '../redux/posts'
+import { useDispatch } from 'react-redux'
+import { Link } from "react-router-dom";
+
 
 function Post({ postData }) {
+
+    
+    // --- Local Variables --- //
     let { title, description, date, likes, tags, image, username, _id: id, comments, creatorID } = postData;
     let user = JSON.parse(localStorage.getItem('profile')).account;
-    const dispatch = useDispatch()
-
     const latestComments = comments.slice(0, 3);
-
     const imgToUse = image ? image : emptyImage;
-    const [showDelete, setShowDelete] = useState(false);
-    const [showEdit, setShowEdit] = useState(false);
+
+
+    // --- React Hooks --- //
+    const [showDelete, setShowDelete]     = useState(false);
+    const [showEdit, setShowEdit]         = useState(false);
     const [showComments, setShowComments] = useState(false);
     const [commentField, setCommentField] = useState("")
 
+    const dispatch = useDispatch()
 
-    const descStyle = {
-        textAlign: 'left',
-        paddingLeft: '20px',
-        paddingRight: '20px',
-        margin: "5px",
-        fontSize: '14px',
-    }
-
-    const titleStyle = { color: "black", textDecoration: "none", textAlign: "center", margin: "0px" }
-    const buttonPadding = { marginRight: "7px", marginLeft: "7px" }
-    const topStyle = { margin: '3px', textAlign: "center" }
-    const iconStyle = { fontSize: "25px" }
-
+    // --- Supporting Functions --- //
     const reload = async () => {
-        const result = await getPosts(user._id)
+        const result = await getMyPosts(user._id)
         const allPosts = await getAllPosts()
         dispatch(setUserPosts(result.data))
         dispatch(setPosts(allPosts.data))
@@ -78,7 +80,24 @@ function Post({ postData }) {
         reload()
     }
 
-    return (<>
+
+    // --- Style structures --- //
+    const descStyle = {
+        textAlign: 'left',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        margin: "5px",
+        fontSize: '14px',
+    }
+
+    const titleStyle = { color: "black", textDecoration: "none", textAlign: "center", margin: "0px" }
+    const buttonPaddingStyle = { marginRight: "7px", marginLeft: "7px" }
+    const topStyle = { margin: '3px', textAlign: "center" }
+    const iconStyle = { fontSize: "25px" }
+
+    // --- Main Return --- //
+    return (
+    <>
         <Confirmation onClose={() => setShowDelete(false)} onDelete={onDelete} open={showDelete} id={id} />
 
         <Dialog open={showEdit} onClose={() => setShowEdit(false)}>
@@ -112,16 +131,16 @@ function Post({ postData }) {
                 <IconButton aria-label="add to favorites" onClick={() => onLike(id)}>
                     <Favorite style={iconStyle} />
                 </IconButton>
-                <span style={buttonPadding}></span>
+                <span style={buttonPaddingStyle}></span>
                 <IconButton aria-label="add to favorites" onClick={() => setShowComments(true)}>
                     <Comment style={iconStyle} />
                 </IconButton>
                 {user.username === username && <>
-                    <span style={buttonPadding}></span>
+                    <span style={buttonPaddingStyle}></span>
                     <IconButton aria-label="add to favorites" onClick={() => setShowEdit(true)}>
                         <Edit style={iconStyle} />
                     </IconButton>
-                    <span style={buttonPadding}></span>
+                    <span style={buttonPaddingStyle}></span>
                     <IconButton aria-label="add to favorites" onClick={() => setShowDelete(true)}>
                         <Delete style={iconStyle} />
                     </IconButton>

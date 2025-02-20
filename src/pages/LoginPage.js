@@ -1,35 +1,39 @@
-import Alert from '@mui/material/Alert';
-import { useState } from "react";
-import { Card, Button } from '@mui/material';
+// Local APIs
 import { signin, signup } from "../api/routes";
+
+// Local Images
+import banner from '../images/banner.png'
+
+// External MUI Imports
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
-import { useNavigate } from 'react-router-dom'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import IconButton from '@mui/material/IconButton';
-import banner from '../images/banner.png'
+import { Card, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+
+// External Imports
+import { useNavigate } from 'react-router-dom'
+import { useState } from "react";
+
+
 
 function LoginPage({ setLoggedIn }) {
-    const backdrop = { fontFamily: 'sans-serif', padding: '50px', textAlign: 'center' }
-    const inputStyle = { marginBottom: "25px", width: "100%" }
 
-    const formStyle = {
-        textAlign: "left",
-        width: "500px",
-        maxWidth: "80%",
-        display: "inline-block",
-        padding: "20px",
-        backgroundColor: "white"
-    }
+    // --- React Hooks --- //
+    const [usernameField, setUsernameField] = useState("")
+    const [passwordField, setPasswordField] = useState("")
+    const [emailField, setEmailField] = useState("")
+    const [alertText, setAlertText] = useState("")
+    const [showPassword, setShowPassword] = useState(false)
+    const [isSignup, setIsSignup] = useState(false)
+    const [showAlert, setAlert] = useState(false);
 
-    const buttonStyle = {
-        width: "100%",
-        marginBottom: "10px",
-        marginTop: "10px"
-    }
+    const navigate = useNavigate();
 
 
+    // --- Supporting Functions --- //
     const onSubmit = async (e) => {
         e.preventDefault()
         if (usernameField === "" || passwordField === "") {
@@ -94,18 +98,33 @@ function LoginPage({ setLoggedIn }) {
         setIsSignup(isSignup)
     }
 
-    const [usernameField, setUsernameField] = useState("")
-    const [passwordField, setPasswordField] = useState("")
-    const [emailField, setEmailField] = useState("")
-    const [alertText, setAlertText] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
-    const [isSignup, setIsSignup] = useState(false)
-    const [showAlert, setAlert] = useState(false);
+    
 
-    const navigate = useNavigate();
+    // --- Style structures --- //
+    const backdropStyle = { fontFamily: 'sans-serif', padding: '50px', textAlign: 'center' }
+    
+    const inputStyle = { marginBottom: "25px", width: "100%" }
 
+    const formStyle = {
+        textAlign: "left",
+        width: "500px",
+        maxWidth: "80%",
+        display: "inline-block",
+        padding: "20px",
+        backgroundColor: "white"
+    }
+
+    const buttonStyle = {
+        width: "100%",
+        marginBottom: "10px",
+        marginTop: "10px"
+    }
+
+
+    // --- Main Return --- //
     return (
-        <div style={backdrop}>
+    <>
+        <div style={backdropStyle}>
             <img src={banner} width="250" alt="banner" style = {{marginBottom: "20px"}}/>
             <br />
             <Card style={formStyle}>
@@ -153,7 +172,9 @@ function LoginPage({ setLoggedIn }) {
 
             </Card>
             <p>© 2022 Snapagram Inc.</p>
-        </div>);
+        </div>
+    </>
+    );
 }
 
 export default LoginPage;

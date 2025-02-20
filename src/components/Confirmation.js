@@ -1,3 +1,4 @@
+// External MUI Imports
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,13 +8,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 function Confirmation({onDelete, onClose, open, id}) {
     
-    return ( <>
-             <Dialog
-                open={open}
-                onClose={onClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
+    // --- Main Return --- //
+    return ( 
+    <>
+        <Dialog
+            open={open}
+            onClose={onClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description">
+                
                 <DialogTitle id="alert-dialog-title">
                     Delete Post?
                 </DialogTitle>
@@ -28,9 +31,9 @@ function Confirmation({onDelete, onClose, open, id}) {
                         Delete
                     </Button>
                 </DialogActions>
-            </Dialog>
-    
-    </> );
+        </Dialog>
+    </> 
+    );
 }
 
 export default Confirmation;

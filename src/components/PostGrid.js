@@ -1,8 +1,15 @@
-import { Grid, CircularProgress} from '@mui/material/';
+// Local Components
 import Post from './Post';
 
+// External MUI Imports
+import { Grid, CircularProgress} from '@mui/material/';
+
+
 function PostGrid({ posts }) {
-    return (<>
+
+    // --- Main Return --- //
+    return (
+    <>
 
         {posts === null && <CircularProgress />}
 
@@ -14,7 +21,8 @@ function PostGrid({ posts }) {
             ))}
         </Grid>
 
-    </>);
+    </>
+    );
 }
 
 export default PostGrid;

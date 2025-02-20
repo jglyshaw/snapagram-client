@@ -1,20 +1,23 @@
-import { useState } from "react";
-import { Button } from "@mui/material";
+// External MUI Imports
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
+import { Button } from "@mui/material";
+
+// External Imports
+import { useState } from "react";
 
 function PostForm({ onSubmitCall, post }) {
 
+    // --- React Hooks --- //
     const [titleField, setTitleField] = useState(post ? post.title : "")
     const [imageField, setImageField] = useState(post ? post.image : "")
     const [descriptionField, setDescriptionField] = useState(post ? post.description : "")
     const [tagField, setTagField] = useState(post ? post.tags.toString() : "")
     const [showAlert, setAlert] = useState(false);
 
-    const inputStyle = { width: "100%", marginBottom: "20px" }
-    const buttonStyle = { width: "100%" }
 
+    // --- Supporting Functions --- //
     const onSubmit = async (e) => {
         e.preventDefault()
 
@@ -29,9 +32,17 @@ function PostForm({ onSubmitCall, post }) {
         setImageField("")
         setTagField("")
         setAlert(false)
-
     }
-    return (<>
+
+
+    // --- Style structures --- //
+    const inputStyle = { width: "100%", marginBottom: "20px" }
+    const buttonStyle = { width: "100%" }
+
+
+    // --- Main Return --- //
+    return (
+    <>
 
         <form onSubmit={(e) => onSubmit(e)} style={{ backgroundColor: "white", padding: "15px" }}>
             {showAlert && <Alert severity="error">Invalid Form Data</Alert>}
@@ -75,7 +86,8 @@ function PostForm({ onSubmitCall, post }) {
                 <Button type='submit' style={buttonStyle} variant="contained">Save Post</Button>
             </Grid>
         </form>
-    </>);
+    </>
+    );
 }
 
 export default PostForm;

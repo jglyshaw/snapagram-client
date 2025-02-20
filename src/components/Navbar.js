@@ -1,4 +1,4 @@
-import * as React from 'react';
+// External MUI Imports
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,43 +12,54 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
+
+// External Imports
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom'
 
+
 const ResponsiveAppBar = ({ setLoggedIn }) => {
 
+  // --- Local Variables --- //
   let user = JSON.parse(localStorage.getItem('profile')).account;
+
+  // --- React Hooks --- //
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
 
+  // --- Supporting Functions --- //
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const Links = ({color}) => {
-    return (
-      <>
-        <Link to="/allposts" style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
-          <MenuItem onClick={handleClose}>All Posts</MenuItem></Link>
-        <Link to="/posts" style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
-          <MenuItem onClick={handleClose}>My Posts</MenuItem></Link>
-        <Link to={`/account/${user.username}`} style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
-          <MenuItem onClick={handleClose}>Account</MenuItem></Link>
-      </>)
-  }
-
   const signOut = () => {
     setLoggedIn(false)
     localStorage.clear();
     navigate("/login")
   }
 
+
+  // --- Sub Components --- //
+  const Links = ({color}) => {
+    return (
+      <>
+        <Link to="/all-posts" style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
+          <MenuItem onClick={handleClose}>All Posts</MenuItem></Link>
+        <Link to="/my-posts" style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
+          <MenuItem onClick={handleClose}>My Posts</MenuItem></Link>
+        <Link to={`/account/${user.username}`} style={{color: color, textTransform: "capitalize", textDecoration: "none", height: "100%" }} >
+          <MenuItem onClick={handleClose}>Account</MenuItem></Link>
+      </>)
+  }
+
+  // --- Main Return --- //
   return (
+  <>
     <AppBar position="sticky" style={{ backgroundColor: "black" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -120,6 +131,7 @@ const ResponsiveAppBar = ({ setLoggedIn }) => {
         </Toolbar>
       </Container>
     </AppBar>
+  </>
   );
 };
 export default ResponsiveAppBar;

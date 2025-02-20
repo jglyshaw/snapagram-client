@@ -1,16 +1,22 @@
+// Local Components
 import PostGrid from "../components/PostGrid";
+
+// External Imports
 import { useSelector } from 'react-redux'
 
 function AllPosts() {
-    const backdrop = {
-    
-    }
-    const posts = useSelector((state) => state.postReducer.value)
 
-    return (
-        <div style={backdrop}>
-            <PostGrid posts={posts}/>
-        </div>
-    );
+  // --- React Hooks --- //
+  const posts = useSelector((state) => state.postReducer.value)
+
+  // --- Main Return --- //
+  return (
+  <>
+    <div>
+      <PostGrid posts={posts} />
+    </div>
+  </>
+  );
+  
 }
 export default AllPosts;

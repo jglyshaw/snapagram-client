@@ -5,5 +5,36 @@ This project is just for fun/my own personal education.
 ## Hosting
 The website uses an API that I deployed onto Heroku. The website is currently being hosted on snapagram.netlify.app.
 
-First run `npm install`
-then `npm start`
+1. `npm install`
+2. `npm start`
+
+Include statements are organised as such
+```
+// Local Pages
+// Local Components
+// Local APIs
+// Local Images
+// External MUI Imports
+// External Imports
+```
+
+Other code
+```
+// --- Local Variables --- //
+
+// --- React Hooks --- //
+1. useState
+2. useParams
+3. useSelector
+4. useDispatch
+5. useNavigate
+6. useEffect
+
+// --- Supporting Functions --- //
+
+// --- Sub Components --- //
+
+// --- Style structures --- //
+
+// --- Main Return --- //
+```
