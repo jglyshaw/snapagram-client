@@ -2,13 +2,23 @@
 This is a website that I am working on that allows for some of the core functionalities of a social media website.
 This project is just for fun/my own personal education.
 
-## Hosting
-The website uses an API that I deployed onto Heroku. The website is currently being hosted on snapagram.netlify.app.
+<br>
 
+## Hosting
+The website uses an API that I deployed onto Heroku. The website is currently being hosted on [snapagram.netlify.app](snapagram.netlify.app).
+
+<br>
+
+## Local Usage Guide
 1. `npm install`
 2. `npm start`
 
-Include statements are organised as such
+<br>
+
+
+## Organization Guide
+
+#### Include statements are organised as such
 ```
 // Local Pages
 // Local Components
@@ -18,7 +28,7 @@ Include statements are organised as such
 // External Imports
 ```
 
-Other code
+#### Other code
 ```
 // --- Local Variables --- //
 
